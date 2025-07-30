@@ -80,7 +80,7 @@ if (__DEV__) {
 export default definePlugin({
     name: "Dummy",
     description: "Does literally nothing! Used for showcasing plugin APIs.",
-    authors: [Devs.Pylix],
+    authors: [Devs.Blaze],
 
     isAvailable: () => __DEV__,
 
