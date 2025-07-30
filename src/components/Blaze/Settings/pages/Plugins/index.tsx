@@ -1,0 +1,67 @@
+import PLUGINS from "#wt-plugins";
+import { isPluginInternal } from "@plugins/utils";
+import AddonPage from "../Addon";
+import { createAddonCollectionManager } from "../Addon/AddonCollectionManager";
+import type { BlazeCordPluginInstance } from "@plugins/types";
+import usePluginStore from "@stores/usePluginStore";
+import { showSheet } from "@components/utils/sheets";
+
+const pluginCollectionManager = createAddonCollectionManager({
+    data: () => Object.values(PLUGINS),
+    defaultFilterOptions: ["HIDE_INTERNAL", "HIDE_UNAVAILABLE"],
+    defaultSortOption: "A-Z",
+    sortOptions: [
+        {
+            key: "A-Z",
+            label: () => "A-Z",
+            compareFn: (a, b) => {
+                const aInternal = isPluginInternal(a);
+                const bInternal = isPluginInternal(b);
+                if (aInternal !== bInternal) return aInternal ? 1 : -1;
+                return a.name.localeCompare(b.name);
+            },
+        },
+        {
+            key: "Z-A",
+            label: () => "Z-A",
+            compareFn: (a, b) => {
+                const aInternal = isPluginInternal(a);
+                const bInternal = isPluginInternal(b);
+                if (aInternal !== bInternal) return aInternal ? 1 : -1;
+                return b.name.localeCompare(a.name);
+            },
+        },
+    ],
+    filterOptions: [
+        {
+            key: "HIDE_INTERNAL",
+            // TODO: I18n
+            label: () => "Hide internal plugins",
+            filterFn: a => !isPluginInternal(a),
+        },
+        {
+            key: "HIDE_UNAVAILABLE",
+            // TODO: I18n
+            label: () => "Hide unavailable plugins",
+            filterFn: a => a.isAvailable?.() !== false,
+        },
+    ],
+});
+
+export default function PluginsPage() {
+    return (
+        <AddonPage<BlazeCordPluginInstance>
+            collectionManager={pluginCollectionManager}
+            onPressInfo={plugin => {
+                showSheet("PluginSheetComponent", import("./PluginSheetComponent"), { plugin });
+            }}
+            useCanHandleAddon={id => PLUGINS[id].$isToggleable()}
+            useToggler={id => {
+                const enabled = usePluginStore(s => s.settings[id].enabled);
+                const toggle = usePluginStore(s => s.togglePlugin);
+
+                return [enabled, v => toggle(id, v)];
+            }}
+        />
+    );
+}

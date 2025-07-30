@@ -1,0 +1,10 @@
+{
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "explicit"
+	},
+	"editor.formatOnSave": true,
+	"[typescriptreact]": {
+		"editor.linkedEditing": true
+	},
+	"typescript.tsdk": "node_modules\\typescript\\lib"
+}
