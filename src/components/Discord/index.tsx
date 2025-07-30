@@ -3,6 +3,7 @@ import IconButton from "./Button/IconButton";
 import Card from "./Card/Card";
 import BottomSheet from "./Sheet/BottomSheet";
 import Stack from "./Stack/Stack";
+import Slider from "./Slider/Slider";
 import RowButton from "./TableRow/RowButton";
 import TableCheckboxRow from "./TableRow/TableCheckboxRow";
 import TableRadioGroup from "./TableRow/TableRadioGroup";
@@ -19,6 +20,7 @@ export {
     Button,
     BottomSheet,
     Stack,
+    Slider,
     Text,
     Card,
     IconButton,

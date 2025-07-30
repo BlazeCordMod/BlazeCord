@@ -11,18 +11,18 @@ const en = {
         },
     },
     error_boundary: {
-        uh_oh: "Uh oh.",
-        retry_render: "Retry Render",
-        reload: "Reload Discord",
-        safe_mode: "Safe Mode",
-        stack_trace: "Stack Trace",
+        uh_oh: "Fuckn Blaze~",
+        retry_render: "Retry",
+        reload: "Reload BlazeCord",
+        safe_mode: "Safe-Mode",
+        stack_trace: "Stack-Trace",
         screen: {
             copy: "Copy",
             show_more: "Show more",
             show_less: "Show less",
             component_stack: "Component Stack",
             call_stack: "Call Stack",
-            description: "An error occurred while rendering a component. This may have been caused by a plugin, BlazeCord, or Discord itself.",
+            description: "Something fucked up rendering some shit. Could've been caused by Discord internally, or because Blaze is a fucking skidtard.",
         }
     },
     actions: {
@@ -44,6 +44,7 @@ const en = {
         sections: {
             plugins: "Plugins",
             themes: "Themes",
+            wallpapers: "Wallpapers",
             developer: "Developer",
             updater: "Updater",
         },
@@ -52,7 +53,7 @@ const en = {
             logs: "Logs",
             platform: "Platform",
             quick_actions: "Quick Actions",
-            reload: "Reload Discord",
+            reload: "Reload BlazeCord",
             links: "Links",
             github: "GitHub",
             discord: "Discord",
@@ -67,12 +68,12 @@ const en = {
                 label: "Configurations",
                 safe_mode: {
                     label: "Safe Mode",
-                    description: "This will stop non-essential addons from running, leaving only core functionalities. Restart required.",
+                    description: "Stops all plugins not required to run. Useful when something breaks, because it will eventually lol. *Restart required*",
                     alert: {
                         title: "{action|{disable: Disable, enable: Enable}} Safe Mode?",
-                        description: "Do you want to {action:string} safe mode? This will {action|{enable: stop non-essential plugins from running, disable: allow all plugins to run as usual}}. A restart is needed for changes to take effect.",
-                        apply_and_restart: "Apply and Restart",
-                        apply_without_restart: "Apply Without Restart",
+                        description: "Do you want to {action:string} safe mode? This will {action|{enable: stop all non-essential plugins from running, disable: allow all plugins to run normally}}. Restart the app to take effect.",
+                        apply_and_restart: "Apply & Restart",
+                        apply_without_restart: "Apply & Continue",
                     },
                 }
             }
@@ -80,7 +81,7 @@ const en = {
         plugins: {
             description: "Description",
             safe_mode_callout: "Safe Mode Enabled",
-            safe_mode_callout_desc: "Only essential plugins will take effect while safe mode is enabled.",
+            safe_mode_callout_desc: "Only essential plugins will be loaded.",
             info_sheet: {
                 details: "Details",
                 more_info: "More Info",
@@ -96,12 +97,12 @@ const en = {
             sections: {
                 init_config: {
                     label: "Loader Configurations",
-                    sublabel: "Configure the loader to use custom endpoint for bundle fetching. Refer CONTRIBUTING.md to learn how to configure local dev server for development",
-                    custom_endpoint: "Custom Endpoint",
-                    bundle_path: "Override Bundle Path",
-                    bundle_path_desc: "Override the path to the bundle file. By default, the injector prioritizes the bytecode bundle, followed by the minified bundle, and lastly, the regular bundle.",
+                    sublabel: "Override where BlazeCord's bundle.js is loaded from. (Advanced)",
+                    custom_endpoint: "Custom Endpoint:",
+                    bundle_path: "Custom Path:",
+                    bundle_path_desc: "Override the path to BlazeCord's bundle.js file.",
                     force_update: "Force Update",
-                    force_update_desc: "Forcefully fetch bundle every app start to ensure latest bundle is loaded",
+                    force_update_desc: "Forcefully fetch BlazeCords latest bundle.js every app start to always load the latest build.",
                 },
                 tools: {
                     label: "Tools",
@@ -114,19 +115,25 @@ const en = {
                 },
                 actions: {
                     label: "Actions",
-                    invalidate_metro_cache: "Invalidate Metro Cache",
+                    invalidate_metro_cache: "Wipe Metro Cache",
                 }
             },
         },
         updater: {
             info: "Info",
-            repo: "Repository",
+            repo: "Repo",
             settings: "Settings",
-            autoUpdate: "Automatic Updates",
-            autoUpdateDescription: "Enable automatic bundle updates without prompts. Bundles are forcefully fetched if uncached.",
-            notifyNewUpdates: "Notify New Updates",
-            notifyNewUpdatesDescription: "Show a notification when a new update is available.",
+            autoUpdate: "Auto-Update",
+            autoUpdateDescription: "Automatically update BlazeCord without prompts when a new version becomes available.",
+            notifyNewUpdates: "Prompt-Update",
+            notifyNewUpdatesDescription: "Show a notification when a new version of BlazeCord is available.",
             checkForUpdates: "Check for Updates",
+        },
+    },
+    commands: {
+        debug: {
+            info: "Send debug information",
+            ephemeral: "Send ephemerally",
         }
     },
 } satisfies BaseTranslation;

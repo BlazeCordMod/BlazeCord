@@ -10,6 +10,7 @@
 	"dependencies": {
 		"@babel/core": "^7.28.0",
 		"@gullerya/object-observer": "^6.1.4",
+		"@react-native-documents/picker": "^10.1.5",
 		"@shopify/flash-list": "^1.8.3",
 		"@swc/helpers": "^0.5.17",
 		"@types/react": "^18.3.23",
@@ -19,6 +20,7 @@
 		"fuzzysort": "3.0.2",
 		"immer": "^10.1.1",
 		"node-inspect-extracted": "3.0.2",
+		"react-native-document-picker": "^9.3.1",
 		"react-native-gesture-handler": "^2.27.2",
 		"react-native-reanimated": "3.17.4",
 		"strict-event-emitter": "^0.5.1",
