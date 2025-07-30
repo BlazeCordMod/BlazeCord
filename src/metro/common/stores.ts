@@ -14,6 +14,7 @@ export function getStore(name: string, resolver?: (store: any) => any): S.FluxSt
 }
 
 export let UserStore = getStore("UserStore", m => (UserStore = m)) as S.UserStore;
+export let UserStore = getStore("UserStore", m => (UserStore = m)) as S.UserStore;
 export let ChannelStore = getStore("ChannelStore", m => (ChannelStore = m)) as S.ChannelStore;
 export let GuildStore = getStore("GuildStore", m => (GuildStore = m)) as S.GuildStore;
 

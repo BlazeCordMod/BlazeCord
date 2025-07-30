@@ -758,6 +758,13 @@ export type TranslationFunctions = {
 			checkForUpdates: () => LocalizedString
 		}
 	}
+	commands: {
+		/**
+		 * Description
+		 */
+		description: () => LocalizedString
+
+	}
 }
 
 export type Formatters = {}

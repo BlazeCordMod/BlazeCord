@@ -1,5 +1,6 @@
 import { lookupByProps } from "@metro/common/wrappers";
 
+export * from "./Commands";
 export * from "./Discord";
 export * from "./Flux";
 
