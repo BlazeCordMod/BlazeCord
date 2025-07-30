@@ -14,9 +14,17 @@ export function getStore(name: string, resolver?: (store: any) => any): S.FluxSt
 }
 
 export let UserStore = getStore("UserStore", m => (UserStore = m)) as S.UserStore;
-export let UserStore = getStore("UserStore", m => (UserStore = m)) as S.UserStore;
+
 export let ChannelStore = getStore("ChannelStore", m => (ChannelStore = m)) as S.ChannelStore;
+export let SelectedChannelStore = getStore("SelectedChannelStore", m => (SelectedChannelStore = m)) as S.SelectedChannelStore;
+
 export let GuildStore = getStore("GuildStore", m => (GuildStore = m)) as S.GuildStore;
+export let GuildMemberStore = getStore("GuildMemberStore", m => (GuildMemberStore = m)) as S.GuildMemberStore;
+export let SelectedGuildStore = getStore("SelectedGuildStore", m => (SelectedGuildStore = m)) as S.SelectedGuildStore;
+
+export let RelationshipStore = getStore("RelationshipStore", m => (RelationshipStore = m)) as S.RelationshipStore;
+
+export let MessageStore = getStore("MessageStore", m => (MessageStore = m)) as S.MessageStore;
 
 export let DeveloperExperimentStore = getStore("DeveloperExperimentStore", m => (DeveloperExperimentStore = m));
 
