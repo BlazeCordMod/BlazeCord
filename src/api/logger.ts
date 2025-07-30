@@ -142,4 +142,4 @@ class Logger {
     }
 }
 
-export const wtlogger = new Logger("BlazeCord");
+export const blzlogger = new Logger("BlazeCord");

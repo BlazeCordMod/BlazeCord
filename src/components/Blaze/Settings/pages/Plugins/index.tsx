@@ -1,4 +1,4 @@
-import PLUGINS from "#wt-plugins";
+import PLUGINS from "#blz-plugins";
 import { isPluginInternal } from "@plugins/utils";
 import AddonPage from "../Addon";
 import { createAddonCollectionManager } from "../Addon/AddonCollectionManager";
