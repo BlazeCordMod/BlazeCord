@@ -9,7 +9,7 @@ import { writeFile } from "node:fs/promises";
 import * as c from "ansi-colors";
 import { compileWithHermesc, getHermesBytecodeVersion } from "./utils/hermesc";
 
-export interface WintryBuildContext {
+export interface BlazeCordBuildContext {
     contextCreated: number;
     timeTaken?: number;
     lastBuildTime?: number;
@@ -35,10 +35,10 @@ interface BuildContextOptions {
 export async function createBuildContext({
     deploy = args.deploy,
     minify,
-}: BuildContextOptions): Promise<WintryBuildContext> {
+}: BuildContextOptions): Promise<BlazeCordBuildContext> {
     const config = await getEsbuildConfig({ deploy, minify });
 
-    const context: WintryBuildContext = {
+    const context: BlazeCordBuildContext = {
         contextCreated: Date.now(),
         lastBuildConsumed: true,
         config: config,
@@ -58,9 +58,9 @@ export async function createBuildContext({
     return context;
 }
 
-export let buildingContext: WintryBuildContext | undefined;
+export let buildingContext: BlazeCordBuildContext | undefined;
 
-async function buildBundle(buildContext: WintryBuildContext, silent = false, skipCompile = false) {
+async function buildBundle(buildContext: BlazeCordBuildContext, silent = false, skipCompile = false) {
     buildingContext = buildContext;
     if (!silent) logger(yellowBright(`Building ${bold(buildContext.config.outfile ?? "bundle")}...`));
 

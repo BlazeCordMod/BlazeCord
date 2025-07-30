@@ -95,7 +95,7 @@ export default function BlazeCordPage() {
                                     {
                                         text: t.actions.nevermind(),
                                         variant: "secondary",
-                                        onPress: () => {},
+                                        onPress: () => { },
                                     },
                                 ],
                             });
@@ -124,8 +124,8 @@ export default function BlazeCordPage() {
                     label={t.settings.general.x()}
                     icon={<TableRow.Icon source={findAssetId("img_account_sync_x_light")} />}
                     arrow={true}
-                    trailing={<TableRow.TrailingText text={Links.X} />}
-                    onPress={() => openURL(`https://${Links.X}`)}
+                    trailing={<TableRow.TrailingText text={Links.PAYPAL} />}
+                    onPress={() => openURL(`https://${Links.PAYPAL}`)}
                 />
             </TableRowGroup>
         </PageWrapper>

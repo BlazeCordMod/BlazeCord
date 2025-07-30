@@ -56,7 +56,7 @@ const en = {
             links: "Links",
             github: "GitHub",
             discord: "Discord",
-            x: "X",
+            paypal: "PayPal",
             react: "React",
             react_native: "React Native",
             hermes: "Hermes",

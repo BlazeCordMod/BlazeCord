@@ -16,7 +16,7 @@ async function generateAssetScript(absolutePath: string): Promise<string> {
     const base64Data = Buffer.from(fileBuffer).toString("base64");
 
     const asset = {
-        __wintry: true,
+        __blazecord: true,
         __packager_asset: true,
         width: dimensions.width,
         height: dimensions.height,
@@ -47,9 +47,9 @@ export function assetLoaderPlugin({ extensions }: AssetLoaderOptions): Plugin {
                 const filePathFromRoot = args.path.startsWith("@")
                     ? path.join("src", args.path.slice(1))
                     : path.relative(
-                          ".",
-                          path.resolve(path.dirname(args.importer), args.path), // Full path to asset
-                      );
+                        ".",
+                        path.resolve(path.dirname(args.importer), args.path), // Full path to asset
+                    );
 
                 return {
                     path: filePathFromRoot.replaceAll(path.sep, "/"),

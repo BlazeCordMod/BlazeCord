@@ -180,9 +180,9 @@ type RootTranslation = {
 			 */
 			discord: string
 			/**
-			 * X
+			 * PayPal
 			 */
-			x: string
+			paypal: string
 			/**
 			 * R​e​a​c​t
 			 */
@@ -553,9 +553,9 @@ export type TranslationFunctions = {
 			 */
 			discord: () => LocalizedString
 			/**
-			 * X
+			 * PayPal
 			 */
-			x: () => LocalizedString
+			paypal: () => LocalizedString
 			/**
 			 * React
 			 */

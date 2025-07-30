@@ -36,10 +36,10 @@ export async function getEsbuildConfig({ deploy = false, minify = false }): Prom
             "const-and-let": false,
         },
         banner: {
-            js: ["var WINTRY_START_TIME = nativePerformanceNow();", "var window = this;"].join(" "),
+            js: ["var BLAZECORD_START_TIME = nativePerformanceNow();", "var window = this;"].join(" "),
         },
         footer: {
-            js: "//# sourceURL=wintry",
+            js: "//# sourceURL=blazecord",
         },
         platform: "browser",
         define: {

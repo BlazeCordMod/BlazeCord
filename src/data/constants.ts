@@ -4,14 +4,14 @@ export interface Dev {
 }
 
 export const Devs = {
-    Pylix: {
-        name: "pylix",
-        id: 492949202121261067n,
+    Blaze: {
+        name: "blaze",
+        id: 300547560840495104n,
     },
 } as const;
 
 export const Links = {
-    GITHUB: "github.com/wtcord",
-    DISCORD: "discord.gg/ATrscNAMpE",
-    X: "x.com/wtcord",
+    GITHUB: "github.com/BlazeCordMod",
+    DISCORD: "discord.gg/CxtkRvT6MU",
+    PAYPAL: "paypal.me/xBlazeK1ng420x",
 };
