@@ -3,11 +3,12 @@ import { View, Text, StyleSheet } from "react-native";
 import { Button, TextInput, Slider } from "@components/Discord";
 import BottomSheet from "@components/Discord/Sheet/BottomSheet";
 import { hideSheet } from "@components/utils/sheets";
-import { lookupByProps } from "@metro/common/wrappers";
 import { useWallpaperStore } from "../../../../../plugins/_core/wallpapers/stores/wallpaperStore";
+import * as DocumentPicker from "react-native-document-picker";
+import * as DocumentsNew from "@react-native-documents/picker";
 
-const DocumentPicker = lookupByProps("pickSingle", "isCancel") as unknown as typeof import("react-native-document-picker");
-const DocumentsNew = lookupByProps("pick", "saveDocuments") as unknown as typeof import("@react-native-documents/picker");
+//const DocumentPicker = lookupByProps("pickSingle", "isCancel") as unknown as typeof import("react-native-document-picker");
+//const DocumentsNew = lookupByProps("pick", "saveDocuments") as unknown as typeof import("@react-native-documents/picker");
 
 export default function AddWallpaperSheet() {
     const [category, setCategory] = useState("");
