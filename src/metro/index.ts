@@ -1,6 +1,6 @@
-import { wtlogger } from "@api/logger";
+import { blzlogger } from "@api/logger";
 
 export * from "./filters";
 export * from "./api";
 
-export const logger = wtlogger.createChild("Metro");
+export const logger = blzlogger.createChild("Metro");

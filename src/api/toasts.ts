@@ -50,16 +50,16 @@ export type Toast = ToastProps & ToastUtils;
  * @param options Additional options
  * @returns Toast control object with hide and update methods
  */
-export function showtoast(text: string): ToastController;
+export function showToast(text: string): ToastController;
 
 /**
  * Show a toast with custom content
  * @param content Toast config
  * @returns Toast control object with hide and update methods
  */
-export function showtoast(content: ToastProps): ToastController;
+export function showToast(content: ToastProps): ToastController;
 
-export function showtoast(configOrText: string | ToastProps): ToastController {
+export function showToast(configOrText: string | ToastProps): ToastController {
     let id: string;
 
     // Parse the content
@@ -79,18 +79,18 @@ export function showtoast(configOrText: string | ToastProps): ToastController {
     };
 
     // Show the toast
-    const showtoast = () =>
+    const showToast = () =>
         useToastStore.getState().updateToast({
             duration: 5000,
             dismissible: true,
             ...(useToastStore.getState().getToast(id) ?? toast),
         });
 
-    showtoast();
+    showToast();
 
     const controller: ToastController = {
         show: () => {
-            showtoast();
+            showToast();
             return controller;
         },
         hide: () => {

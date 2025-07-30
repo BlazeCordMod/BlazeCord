@@ -4,7 +4,7 @@ import { writeFile } from "@api/fs";
 const state: { [key in string]?: string } = (window.s = {});
 
 const KV_FOLDER = "kv";
-const KV_PREFIX = "__wt_kv/";
+const KV_PREFIX = "__blz_kv/";
 
 // Load all KV from global object
 for (const key in window) {

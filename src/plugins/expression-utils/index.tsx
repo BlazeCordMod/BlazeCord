@@ -10,7 +10,7 @@ import StealButtons from "./components/StealButtons";
 import { openMediaModal } from "./utils/openMediaModal";
 import { openEmojiActionSheet } from "./utils/openEmojiActionSheet";
 import PressableScale from "@components/Discord/experimental/PressableScale";
-import { showtoast } from "@api/toasts";
+import { showToast } from "@api/toasts";
 import { byFilePath } from "@metro/common/filters";
 
 function addStealButton(emojiNode: EmojiNode, element: any) {
@@ -116,7 +116,7 @@ export default definePlugin({
     start() {
         patcher.attachDisposer(
             useEmojiAdderStore.subscribe((s, p) => {
-                const toastController = showtoast({
+                const toastController = showToast({
                     id: "expression-utils-upload-status",
                     render: UploadStatusView,
                 }).hide(); // Initially hide the toast
