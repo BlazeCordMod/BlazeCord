@@ -5,13 +5,13 @@ import { useMemo, useState } from "react";
 import { ScrollView } from "react-native";
 import { InlineCheckbox } from "../../../InlineCheckbox";
 import { LogRow } from "./LogRow";
-import { blzlogger } from "@api/logger";
+import { wtlogger } from "@api/logger";
 
 export default function LogsPage() {
     const [showDebug, setShowDebug] = useState(false);
 
     const filteredLogs = useMemo(() => {
-        return blzlogger.logs.filter(log => log.level !== "debug" || showDebug);
+        return wtlogger.logs.filter(log => log.level !== "debug" || showDebug);
     }, [showDebug]);
 
     return (

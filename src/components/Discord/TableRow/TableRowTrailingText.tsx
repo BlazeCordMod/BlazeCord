@@ -1,10 +1,10 @@
 import type { FC } from "react";
 import { getComponentFromProps } from "../util";
 
-interface TableRoblzrailingTextProps {
+interface TableRowtrailingTextProps {
     text: string;
 }
 
-type TableRoblzrailingText = FC<TableRoblzrailingTextProps>;
+type TableRowtrailingText = FC<TableRowtrailingTextProps>;
 
-export default getComponentFromProps("TableRoblzrailingText") as TableRoblzrailingText;
+export default getComponentFromProps("TableRowtrailingText") as TableRowtrailingText;

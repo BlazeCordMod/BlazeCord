@@ -3,10 +3,10 @@ import UpdaterModule, { type UpdateInfo } from "@loader/modules/UpdaterModule";
 import { create } from "zustand";
 import { showAlert } from "@api/alerts";
 import ErrorCard from "@components/Blaze/ErrorCard";
-import { shoblzoast } from "@api/toasts";
+import { showtoast } from "@api/toasts";
 import { Mutex, delay, noop, pick } from "es-toolkit";
 import { t } from "@i18n";
-import { blzlogger } from "@api/logger";
+import { wtlogger } from "@api/logger";
 import { loaderPayload } from "@loader";
 import { BundleUpdaterModule } from "@native";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -22,7 +22,7 @@ interface UpdaterStore {
     checkForUpdates: () => Promise<UpdateInfo | null>;
 }
 
-const logger = blzlogger.createChild("UpdaterStore");
+const logger = wtlogger.createChild("UpdaterStore");
 const _updateMutex = new Mutex();
 
 export const useUpdaterStore = create(
@@ -79,8 +79,8 @@ export async function initCheckForUpdates() {
 }
 
 export function showUpdateAvailableToast(updateInfo: UpdateInfo) {
-    shoblzoast({
-        id: "blz-update-available",
+    showtoast({
+        id: "wt-update-available",
         text: t.updater.new_version(),
         duration: 8000,
         onPress: () => {
@@ -91,7 +91,7 @@ export function showUpdateAvailableToast(updateInfo: UpdateInfo) {
 
 export function showUpdateAvailableAlert(updateInfo: UpdateInfo) {
     showAlert({
-        id: "blz-update-available",
+        id: "wt-update-available",
         title: t.updater.update_available(),
         content: t.updater.new_version(),
         extraContent: (
@@ -123,16 +123,16 @@ export function showUpdateAvailableAlert(updateInfo: UpdateInfo) {
 }
 
 export function showAlreadyUpdatedToast() {
-    shoblzoast({
-        id: "blz-already-updated",
+    showtoast({
+        id: "wt-already-updated",
         text: t.updater.already_latest(),
     });
 }
 
 // TODO: Show more proper
 export function showUpdateErrorToast(error: unknown) {
-    shoblzoast({
-        id: "blz-update-error",
+    showtoast({
+        id: "wt-update-error",
         text: t.updater.failed_to_check(),
         onPress: () => {
             showUpdateErrorAlert(error);
@@ -142,7 +142,7 @@ export function showUpdateErrorToast(error: unknown) {
 
 export function showUpdateErrorAlert(error: unknown) {
     showAlert({
-        id: "blz-update-error",
+        id: "wt-update-error",
         title: t.updater.failed_to_check(),
         content: t.updater.error_alert(),
         extraContent: <ErrorCard header={null} showStackTrace={true} error={error} />,

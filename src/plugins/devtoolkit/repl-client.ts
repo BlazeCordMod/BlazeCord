@@ -1,4 +1,4 @@
-import { blzlogger } from "@api/logger";
+import { wtlogger } from "@api/logger";
 import { delay } from "es-toolkit";
 import { inspect } from "node-inspect-extracted";
 
@@ -16,7 +16,7 @@ const setupWebsocketConnection = (): Promise<WebSocket> => {
                 JSON.stringify({
                     type: "handshake",
                     client: "BlazeCord",
-                    logBuffer: blzlogger.logs,
+                    logBuffer: wtlogger.logs,
                 }),
             );
 
@@ -40,7 +40,7 @@ const setupWebsocketConnection = (): Promise<WebSocket> => {
 
 // Log forwarding setup
 const setupLogForwarding = (socket: WebSocket) => {
-    return blzlogger.pipe(args => {
+    return wtlogger.pipe(args => {
         socket.send(
             JSON.stringify({
                 type: "log",

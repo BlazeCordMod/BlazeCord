@@ -1,9 +1,9 @@
 import { definePlugin, definePluginSettings } from "#plugin-context";
-import { shoblzoast } from "@api/toasts";
+import { showtoast } from "@api/toasts";
 import { Devs } from "@data/constants";
 
 // TODO: Remove this once the silent typing plugin is fully implemented
-const toast = shoblzoast("you are typing rn...").hide();
+const toast = showtoast("you are typing rn...").hide();
 
 const settings = definePluginSettings({
     silentTypingActive: {

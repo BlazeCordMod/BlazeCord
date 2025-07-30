@@ -1,5 +1,5 @@
 import { isValidElement, useEffect, type ReactNode } from "react";
-import { blzlogger } from "./logger";
+import { wtlogger } from "./logger";
 import { lookupByProps } from "@metro/common/wrappers";
 import { BackHandler, Pressable } from "react-native";
 import {
@@ -9,7 +9,7 @@ import {
     type AlertModalProps,
 } from "@components/Discord/AlertModal/AlertModal";
 
-const logger = blzlogger.createChild("Alerts");
+const logger = wtlogger.createChild("Alerts");
 const AlertStore = lookupByProps("openAlert", "useAlertStore").asLazy();
 
 interface AlertPropsBase {

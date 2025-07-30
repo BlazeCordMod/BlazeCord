@@ -1,4 +1,4 @@
-import { blzlogger, type BasicLogger } from "@api/logger";
+import { wtlogger, type BasicLogger } from "@api/logger";
 import type { DefinedOptions, OptionDefinitions, BlazeCordPluginDefinition, BlazeCordPluginInstance } from "./types";
 import { registerPluginSettings, registerPlugin, getContextualPatcher } from "./utils";
 import type { LooseBlazeCordPlugin } from "./types";
@@ -20,7 +20,7 @@ interface PluginContext {
     patcher: ContextualPatcher;
 }
 
-export const pluginlogger = blzlogger.createChild("Plugins");
+export const pluginlogger = wtlogger.createChild("Plugins");
 
 export function getPluginContext(id: string): PluginContext {
     // If you added more properties to the context (first level), make sure to update

@@ -20,7 +20,7 @@ export interface TableRowProps extends TableRowBaseProps {
 
 type TableRow = React.FC<TableRowProps> & {
     Icon: typeof import("./TableRowIcon").default;
-    TrailingText: typeof import("./TableRoblzrailingText").default;
+    TrailingText: typeof import("./TableRowtrailingText").default;
     Arrow: typeof import("./TableRowArrow").default;
 };
 

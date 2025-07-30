@@ -4,15 +4,15 @@ import { immer } from "zustand/middleware/immer";
 import { kvStorage } from "@loader/kvStorage";
 import type { PluginSettings, PluginState, BlazeCordPluginInstance } from "@plugins/types";
 import { getProxyFactory, lazyValue } from "@utils/lazy";
-import { blzlogger } from "@api/logger";
+import { wtlogger } from "@api/logger";
 import { isSafeModeEnabled } from "@loader";
 import { waitFor } from "@metro/internal/modules";
 import { getContextualPatcher, getPluginSettings } from "@plugins/utils";
 import { interceptFluxEvent, type FluxEvent } from "@api/flux";
 import type { ContextualPatcher } from "@patcher/contextual";
 
-const logger = blzlogger.createChild("PluginStore");
-const PLUGINS = lazyValue(() => require("#blz-plugins").default, { hint: "object" }) as Record<
+const logger = wtlogger.createChild("PluginStore");
+const PLUGINS = lazyValue(() => require("#wt-plugins").default, { hint: "object" }) as Record<
     string,
     BlazeCordPluginInstance
 >;

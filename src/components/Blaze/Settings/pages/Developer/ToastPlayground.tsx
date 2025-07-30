@@ -1,11 +1,11 @@
-import { blzlogger } from "@api/logger";
-import { shoblzoast, type CustomToastProps, type ToastProps } from "@api/toasts";
+import { wtlogger } from "@api/logger";
+import { showtoast, type CustomToastProps, type ToastProps } from "@api/toasts";
 import { RowButton, TableRow, TableRowGroup, TableSwitchRow, Text, TextInput } from "@components/Discord";
 import PageWrapper from "@components/Blaze/Settings/PageWrapper";
 import { useEffect, useState, type ReactNode } from "react";
 import { ActivityIndicator, View, ScrollView } from "react-native";
 
-const logger = blzlogger.createChild("ToastPlayground");
+const logger = wtlogger.createChild("ToastPlayground");
 
 function DemoToastComponent(props: CustomToastProps): ReactNode {
     const [count, setCount] = useState(0);
@@ -38,7 +38,7 @@ export default function ToastPlayground() {
         updateAfterDelay: false,
     });
 
-    const handleShoblzoast = () => {
+    const handleShowtoast = () => {
         const options: Partial<ToastProps> = {
             id: JSON.stringify(toastConfig),
             text: toastConfig.text,
@@ -67,7 +67,7 @@ export default function ToastPlayground() {
             }, 2000);
         }
 
-        const toast = shoblzoast(options as ToastProps);
+        const toast = showtoast(options as ToastProps);
     };
 
     return (
@@ -120,11 +120,11 @@ export default function ToastPlayground() {
                     />
                 </TableRowGroup>
 
-                <RowButton label="Show Configured Toast" onPress={handleShoblzoast} />
+                <RowButton label="Show Configured Toast" onPress={handleShowtoast} />
                 <RowButton
                     label="Show Custom Component Toast"
                     onPress={() => {
-                        const toast = shoblzoast({
+                        const toast = showtoast({
                             id: "custom-toast",
                             render: DemoToastComponent,
                             onPress: () => toast.hide(),
@@ -136,7 +136,7 @@ export default function ToastPlayground() {
                 <RowButton
                     label="Loading Toast"
                     onPress={() => {
-                        const toast = shoblzoast({
+                        const toast = showtoast({
                             id: "loading-toast",
                             text: "Loading...",
                             icon: <ActivityIndicator />,

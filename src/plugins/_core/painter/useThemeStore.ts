@@ -1,4 +1,4 @@
-import { blzlogger } from "@api/logger";
+import { wtlogger } from "@api/logger";
 import { kvStorage } from "@loader/kvStorage";
 import { lookupByProps } from "@metro/common/wrappers";
 import { memoize } from "es-toolkit";
@@ -15,7 +15,7 @@ import { BLOOD_TERMINAL } from "./themes/red-on-black";
 import { SOLAR_BLOOM } from "./themes/solar-bloom";
 import { AURORA_VIOLET } from "./themes/aurora-violet";
 
-const logger = blzlogger.createChild("ThemeStore");
+const logger = wtlogger.createChild("ThemeStore");
 const formDividerModule = lookupByProps("DIVIDER_COLORS");
 
 const tokenRefModule = lookupByProps("SemanticColor");
@@ -100,7 +100,7 @@ export const useThemeStore = create(
                     set({
                         appliedTheme: id,
                         currentRef: {
-                            key: `blz-theme-${_inc++}`,
+                            key: `wt-theme-${_inc++}`,
                             color: parseColorManifest(theme),
                         },
                     });

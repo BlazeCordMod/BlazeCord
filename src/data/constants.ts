@@ -11,7 +11,7 @@ export const Devs = {
 } as const;
 
 export const Links = {
-    GITHUB: "github.com/blzcord",
+    GITHUB: "github.com/wtcord",
     DISCORD: "discord.gg/ATrscNAMpE",
-    X: "x.com/blzcord",
+    X: "x.com/wtcord",
 };

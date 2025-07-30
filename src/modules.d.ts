@@ -25,7 +25,7 @@ declare module "#plugin-context" {
     export default _default;
 }
 
-declare module "#blz-plugins" {
+declare module "#wt-plugins" {
     const plugins: Record<string, import("./plugins/types").BlazeCordPluginInstance>;
     export default plugins;
 }

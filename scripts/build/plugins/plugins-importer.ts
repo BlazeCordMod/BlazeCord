@@ -43,7 +43,7 @@ export function pluginsImporterPlugin(): Plugin {
     return {
         name: "plugins-importer",
         setup(build) {
-            build.onResolve({ filter: /^#blz-plugins$/ }, args => {
+            build.onResolve({ filter: /^#wt-plugins$/ }, args => {
                 const pluginsPath = `${rootSrcFile}/plugins`;
                 return {
                     path: pluginsPath,

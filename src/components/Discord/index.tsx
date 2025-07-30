@@ -10,7 +10,7 @@ import TableRadioRow from "./TableRow/TableRadioRow";
 import TableRow from "./TableRow/TableRow";
 import TableRowGroup from "./TableRow/TableRowGroup";
 import TableRowIcon from "./TableRow/TableRowIcon";
-import TableRoblzrailingText from "./TableRow/TableRoblzrailingText";
+import TableRowtrailingText from "./TableRow/TableRowtrailingText";
 import TableSwitchRow from "./TableRow/TableSwitchRow";
 import Text from "./Text/Text";
 import TextInput from "./TextInput/TextInput";
@@ -25,7 +25,7 @@ export {
     TableRow,
     TableRowGroup,
     TableRowIcon,
-    TableRoblzrailingText,
+    TableRowtrailingText,
     RowButton,
     TableCheckboxRow,
     TableSwitchRow,
