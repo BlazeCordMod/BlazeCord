@@ -54,6 +54,8 @@ function applyRuntimeHook(method: "jsx" | "jsxs", args: any[], ret: JSX.Element)
     return ret;
 }
 
+
+export const Fragment = Symbol.for("react.fragment");
 // Wrapped JSX entry points
 export const jsx = (...args: any[]) => applyRuntimeHook("jsx", args, jsxRuntime.jsx(...args));
 export const jsxs = (...args: any[]) => applyRuntimeHook("jsxs", args, jsxRuntime.jsxs(...args));
