@@ -10,7 +10,7 @@ export function getVersions() {
     const rnBranch = hermesProps["OSS Release Version"].replace(/^for /, "");
 
     return {
-        bunny: {
+        blaze: {
             shortRevision: revision.slice(0, 7),
             revision,
             branch,

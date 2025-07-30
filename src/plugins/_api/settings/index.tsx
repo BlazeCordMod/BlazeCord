@@ -1,4 +1,4 @@
-import { definePlugin, definePluginSettings, logger } from "#plugin-context";
+import { definePlugin, logger } from "#plugin-context";
 import {
     _registeredSettingItems,
     _registeredSettingSections,
@@ -12,21 +12,12 @@ import { Devs } from "@data/constants";
 import { getVersions } from "@debug/info";
 import { t } from "@i18n";
 import { byName, byProps } from "@metro/common/filters";
-import { PaintPaletteIcon, PuzzlePieceIcon, WrenchIcon } from "@metro/common/icons";
+import { ImageIcon, PaintPaletteIcon, PuzzlePieceIcon, WrenchIcon } from "@metro/common/icons";
 import { NavigationNative } from "@metro/common/libraries";
 import { useUpdaterStore } from "@stores/useUpdaterStore";
 import { findInReactTree } from "@utils/objects";
 import { memoize } from "es-toolkit";
 import { memo, useLayoutEffect } from "react";
-
-const settings = definePluginSettings({
-    onTop: {
-        label: "Put on top",
-        description: "Put the settings on top of the settings list",
-        type: "boolean",
-        default: false,
-    },
-});
 
 export default definePlugin({
     name: "Settings",
@@ -66,31 +57,19 @@ export default definePlugin({
             target: byName("SettingsOverviewScreen", { returnEsmDefault: false }),
             patch(module, patcher) {
                 patcher.after(module, "default", (_, ret) => {
-                    const { props } = findInReactTree(ret, i => i.props?.sections);
-                    if (!props) {
+                    const node = findInReactTree(ret, i => i?.props?.sections);
+                    if (!node || !Array.isArray(node.props.sections)) {
                         logger.warn("Failed to find settings sections in SettingsOverviewScreen");
                         return;
                     }
 
-                    if (!settings.get().onTop) {
-                        try {
-                            const accountSectionIndex = props.sections.findIndex((i: any) =>
-                                i.settings.includes("ACCOUNT"),
-                            );
-                            if (accountSectionIndex !== -1) {
-                                props.sections = [
-                                    ...props.sections.slice(0, accountSectionIndex + 1),
-                                    ..._registeredSettingSections,
-                                    ...props.sections.slice(accountSectionIndex + 1),
-                                ];
-                                return;
-                            }
-                        } catch (e) {
-                            logger.warn`Failed to insert settings sections next to account section: ${e}`;
-                        }
-                    }
+                    const alreadyInjected = _registeredSettingSections.every(custom =>
+                        node.props.sections.some((sec: { label?: string }) => sec.label === custom.label)
+                    );
 
-                    props.sections = [..._registeredSettingSections, ...props.sections];
+                    if (!alreadyInjected) {
+                        node.props.sections.unshift(..._registeredSettingSections);
+                    }
                 });
             },
         },
@@ -134,8 +113,8 @@ export default definePlugin({
                             const availableUpdate = useUpdaterStore(s => s.availableUpdate);
                             if (availableUpdate) return <Tag text={t.updater.update_tag()} />;
 
-                            const { version, shortRevision, branch } = getVersions().bunny;
-                            return `${version}-${shortRevision} (${branch})`;
+                            const { version, branch } = getVersions().blaze;
+                            return `${version}-(${branch})`;
                         },
                         screen: {
                             route: "BLAZECORD",
@@ -160,6 +139,15 @@ export default definePlugin({
                             getComponent: () => require("@components/Blaze/Settings/pages/Themes").default,
                         },
                     }),
+                    registerSettingRenderer("BLAZECORD_WALLPAPERS", {
+                        type: "route",
+                        title: () => t.settings.sections.wallpapers(),
+                        IconComponent: ImageIcon,
+                        screen: {
+                            route: "BLAZECORD_WALLPAPERS",
+                            getComponent: () => require("@components/Blaze/Settings/pages/Wallpapers").default,
+                        },
+                    }),
                     registerSettingRenderer("BLAZECORD_DEVELOPER", {
                         type: "route",
                         title: () => t.settings.sections.developer(),
@@ -169,15 +157,6 @@ export default definePlugin({
                             getComponent: () => require("@components/Blaze/Settings/pages/Developer").default,
                         },
                     }),
-                    // registerSettingRenderer("BLAZECORD_UPDATER", {
-                    //     type: "route",
-                    //     title: () => t.settings.sections.updater(),
-                    //     IconComponent: DownloadIcon,
-                    //     screen: {
-                    //         route: "BLAZECORD_UPDATER",
-                    //         getComponent: () => lazy(() => import("@components/BlazeSettings/pages/Updater")),
-                    //     },
-                    // }),
                 ],
             });
         });

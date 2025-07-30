@@ -55,11 +55,11 @@ export namespace Metro {
          * */
         hot?: HotModuleReloadingData | undefined;
         /**
-         * Cached `import *` imports in Metro, always an empty object as Bunny prevents outdated import cache
+         * Cached `import *` imports in Metro, always an empty object as blaze prevents outdated import cache
          * */
         importedAll: any;
         /**
-         * Cached `import module from "./module"` imports in Metro, always an empty object as Bunny prevents outdated import cache
+         * Cached `import module from "./module"` imports in Metro, always an empty object as blaze prevents outdated import cache
          * */
         importedDefault: any;
         /**

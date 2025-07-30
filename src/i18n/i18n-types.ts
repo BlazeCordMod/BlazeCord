@@ -447,7 +447,7 @@ export type TranslationFunctions = {
 			 */
 			call_stack: () => LocalizedString
 			/**
-			 * An error occurred while rendering a component. This may have been caused by a plugin, BlazeCord, or Discord itself.
+			 * An error occurred while rendering a component. This may have been caused by Discord itself or blaze being a fucking skid-tard.
 			 */
 			description: () => LocalizedString
 		}
@@ -484,7 +484,7 @@ export type TranslationFunctions = {
 		 */
 		update_now: () => LocalizedString
 		/**
-		 * Update and Restart
+		 * Update & Restart
 		 */
 		update_and_restart: () => LocalizedString
 		/**
@@ -492,11 +492,11 @@ export type TranslationFunctions = {
 		 */
 		already_latest: () => LocalizedString
 		/**
-		 * Failed to check for updates
+		 * Failed to check for updates!
 		 */
 		failed_to_check: () => LocalizedString
 		/**
-		 * An error occurred while checking for updates.
+		 * Error checking for updates!
 		 */
 		error_alert: () => LocalizedString
 	}
@@ -510,6 +510,10 @@ export type TranslationFunctions = {
 			 * Themes
 			 */
 			themes: () => LocalizedString
+			/**
+			 * Wallpapers
+			 */
+			wallpapers: () => LocalizedString
 			/**
 			 * Developer
 			 */

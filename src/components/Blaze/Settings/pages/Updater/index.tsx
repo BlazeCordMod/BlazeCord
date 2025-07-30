@@ -3,7 +3,7 @@ import Button from "@components/Discord/Button/Button";
 import PageWrapper from "@components/Blaze/Settings/PageWrapper";
 import { t } from "@i18n";
 import { getVersions } from "@debug/info";
-import {} from "@components/Discord/AlertModal/AlertModal";
+import { } from "@components/Discord/AlertModal/AlertModal";
 import { findAssetId } from "@api/assets";
 import { View } from "react-native";
 import {
@@ -16,7 +16,7 @@ import { useInitConfigStore } from "@stores/useInitConfigStore";
 import { useEffect } from "react";
 
 export default function UpdaterPage() {
-    const { bunny } = getVersions();
+    const { blaze } = getVersions();
     const { isCheckingForUpdates, notifyOnNewUpdate, checkForUpdates } = useUpdaterStore();
     const { config } = useInitConfigStore();
 
@@ -43,13 +43,13 @@ export default function UpdaterPage() {
                     label={t.blazecord()}
                     icon={<TableRow.Icon source={require("@assets/ic_blazecord.png")} />}
                     trailing={
-                        <TableRow.TrailingText text={`${bunny.version}-${bunny.shortRevision} (${bunny.branch})`} />
+                        <TableRow.TrailingText text={`${blaze.version}-${blaze.shortRevision} (${blaze.branch})`} />
                     }
                 />
                 <TableRow
                     label={t.settings.updater.repo()}
                     icon={<TableRow.Icon source={findAssetId("img_account_sync_github_light")} />}
-                    trailing={<TableRow.TrailingText text={bunny.remote} />}
+                    trailing={<TableRow.TrailingText text={blaze.remote} />}
                 />
             </TableRowGroup>
             <View style={{ flexShrink: 1, alignSelf: "flex-end" }}>

@@ -20,7 +20,7 @@ export default function BlazeCordPage() {
     const navigation = NavigationNative.useNavigation();
     const { config, toggleSafeMode } = useInitConfigStore();
     const updateAvailable = useUpdaterStore(state => state.availableUpdate);
-    const { bunny, discord } = getVersions();
+    const { blaze, discord } = getVersions();
 
     return (
         <PageWrapper scrollable={true} containerStyle={{ paddingTop: 16, gap: 12 }}>
@@ -30,7 +30,7 @@ export default function BlazeCordPage() {
                         title={t.blazecord()}
                         tag={updateAvailable ? t.updater.update_tag() : undefined}
                         style={{ flex: 1 }}
-                        trailing={`${bunny.version}-${bunny.shortRevision}\n(${bunny.branch})`}
+                        trailing={`${blaze.version}-${blaze.shortRevision}\n(${blaze.branch})`}
                         icon={<TableRow.Icon source={require("@assets/ic_blazecord.png")} />}
                         onPress={() => {
                             navigation.push("BLAZECORD_CUSTOM_PAGE", {
@@ -121,8 +121,8 @@ export default function BlazeCordPage() {
                     onPress={() => openURL(`https://${Links.DISCORD}`)}
                 />
                 <TableRow
-                    label={t.settings.general.x()}
-                    icon={<TableRow.Icon source={findAssetId("img_account_sync_x_light")} />}
+                    label={t.settings.general.paypal()}
+                    icon={<TableRow.Icon source={require("@assets/paypal.png")} />}
                     arrow={true}
                     trailing={<TableRow.TrailingText text={Links.PAYPAL} />}
                     onPress={() => openURL(`https://${Links.PAYPAL}`)}

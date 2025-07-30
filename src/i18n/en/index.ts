@@ -11,7 +11,7 @@ const en = {
         },
     },
     error_boundary: {
-        uh_oh: "Fuckn Blaze~",
+        uh_oh: "Fuck Blaze~",
         retry_render: "Retry",
         reload: "Reload BlazeCord",
         safe_mode: "Safe-Mode",
@@ -22,7 +22,7 @@ const en = {
             show_less: "Show less",
             component_stack: "Component Stack",
             call_stack: "Call Stack",
-            description: "Something fucked up rendering some shit. Could've been caused by Discord internally, or because Blaze is a fucking skidtard.",
+            description: "Something fucked up rendering some shit. Could've been caused by Discord internally, or by Blaze being a fucking skid-tard.",
         }
     },
     actions: {
@@ -96,13 +96,13 @@ const en = {
         developer: {
             sections: {
                 init_config: {
-                    label: "Loader Configurations",
+                    label: "BlazeCord Loader Overrides.",
                     sublabel: "Override where BlazeCord's bundle.js is loaded from. (Advanced)",
                     custom_endpoint: "Custom Endpoint:",
                     bundle_path: "Custom Path:",
                     bundle_path_desc: "Override the path to BlazeCord's bundle.js file.",
                     force_update: "Force Update",
-                    force_update_desc: "Forcefully fetch BlazeCords latest bundle.js every app start to always load the latest build.",
+                    force_update_desc: "Load the latest bundle.js every app start. (Advanced)",
                 },
                 tools: {
                     label: "Tools",
@@ -124,7 +124,7 @@ const en = {
             repo: "Repo",
             settings: "Settings",
             autoUpdate: "Auto-Update",
-            autoUpdateDescription: "Automatically update BlazeCord without prompts when a new version becomes available.",
+            autoUpdateDescription: "Automatically update BlazeCord whenever a new version becomes available.",
             notifyNewUpdates: "Prompt-Update",
             notifyNewUpdatesDescription: "Show a notification when a new version of BlazeCord is available.",
             checkForUpdates: "Check for Updates",
