@@ -79,15 +79,23 @@ export default definePlugin({
     ],
 
     start() {
+        // Listen for settings changes immediately (hot updates)
+        settings.subscribe(
+            (state) => state,
+            (newState) => {
+                console.log("[NitroMoji] Settings changed:", newState);
+                // Optionally reapply or update logic here
+            }
+        );
+
+        // Wait for UserStore to grab nitro status
         waitFor(byStoreName("UserStore"), (UserStore) => {
             const user = UserStore.getCurrentUser?.();
             haveNitro = user?.premiumType != null;
-            showToast("🔥 NitroMoji unlocked 🔓");
         });
     },
 
     cleanup() {
-        showToast("🚫 NitroMoji disabled 🔒");
         settings.unsubscribeAll();
     },
 });

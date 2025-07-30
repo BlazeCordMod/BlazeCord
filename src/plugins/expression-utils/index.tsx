@@ -61,8 +61,8 @@ function makeEmojiIconPressable(emojiNode: EmojiNode, element: any) {
 }
 
 export default definePlugin({
-    name: "ExpressionUtils",
-    description: "Adds more emotes and stickers utilities such as cloning or copying links.",
+    name: "Expression Utils",
+    description: "Copy, clone, and upload emojis & stickers",
     authors: [Devs.Blaze],
 
     patches: [
