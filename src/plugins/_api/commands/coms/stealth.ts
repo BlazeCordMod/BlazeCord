@@ -3,7 +3,7 @@ import { messageUtil } from "@metro/common/libraries";
 import usePluginStore from "@stores/usePluginStore";
 
 export default () => <ApplicationCommand>{
-    name: "silent-typing",
+    name: "stealth",
     description: "Toggle Silent Typing on/off",
     options: [
         {

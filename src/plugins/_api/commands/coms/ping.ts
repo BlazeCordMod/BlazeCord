@@ -1,11 +1,12 @@
+import { type ApplicationCommand } from "../types";
 import type { Argument, CommandContext, CommandResult } from "../types";
 
-export default () => ({
+export default () => <ApplicationCommand>{
     name: "ping",
-    description: "Replies with Pong!",
+    description: "Pong!",
     options: [],
     shouldHide: () => false,
     execute(args: Argument[], ctx: CommandContext): CommandResult {
-        return { content: "Pong!" };
+        return { content: "Ping these nuts, motherfucker~" };
     },
-});
+};

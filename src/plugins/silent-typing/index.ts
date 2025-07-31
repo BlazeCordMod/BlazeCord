@@ -7,7 +7,7 @@ const toast = showToast("you are typing rn...").hide();
 
 const settings = definePluginSettings({
     silentTypingActive: {
-        label: "Silent Typing",
+        label: "Stealth Mode",
         description:
             "Turn on to hide your typing status. This setting syncs with the /silent-typing command for easy toggle.",
         type: "boolean",
@@ -17,8 +17,8 @@ const settings = definePluginSettings({
 
 // TODO: Easy toggle with command to enable/disable silent typing
 export default definePlugin({
-    name: "SilentTyping",
-    description: "Conceal your typing status to ensure your activity remains private while writing messages.",
+    name: "Stealth Typing",
+    description: "Prevent others from seeing your \"is typing...\" status.",
     authors: [Devs.Blaze],
 
     flux: {
