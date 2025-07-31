@@ -1,6 +1,6 @@
-import type { BlazeApplicationCommand, Argument, CommandContext, CommandResult } from "../types";
+import type { Argument, CommandContext, CommandResult } from "../types";
 
-const pingCommand: BlazeApplicationCommand = {
+export default () => ({
     name: "ping",
     description: "Replies with Pong!",
     options: [],
@@ -8,6 +8,4 @@ const pingCommand: BlazeApplicationCommand = {
     execute(args: Argument[], ctx: CommandContext): CommandResult {
         return { content: "Pong!" };
     },
-};
-
-export default pingCommand;
+});

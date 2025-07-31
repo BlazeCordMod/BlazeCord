@@ -1,3 +1,4 @@
+import { t } from "@i18n";
 import { type ApplicationCommand, ApplicationCommandOptionType } from "../types";
 import { messageUtil } from "@metro/common/libraries";
 import { lookupByProps } from "@metro/common/wrappers";
@@ -12,27 +13,29 @@ function wrapInJSCodeblock(resString: string) {
 
 export default () => <ApplicationCommand>{
     name: "eval",
-    description: "Run Javascript code.",
+    description: "Run javascript code snippits.",
     options: [
         {
             name: "code",
             type: ApplicationCommandOptionType.STRING,
-            description: "Code to run.",
-            required: true
+            description: "Code to execute.",
+            required: true,
         },
         {
             name: "async",
             type: ApplicationCommandOptionType.BOOLEAN,
-            description: "Run async?",
-        }
+            description: "async",
+        },
     ],
-    async execute([code, async], ctx) {
+    async execute([code, asyncFlag], ctx) {
         try {
-            const res = util.inspect(async?.value ? await AsyncFunction(code.value)() : eval?.(code.value));
+            const res = util.inspect(
+                asyncFlag?.value ? await AsyncFunction(code.value)() : eval?.(code.value)
+            );
             const trimmedRes = res.length > 2000 ? res.slice(0, 2000) + "..." : res;
             messageUtil.sendBotMessage(ctx.channel.id, wrapInJSCodeblock(trimmedRes));
         } catch (err: any) {
             messageUtil.sendBotMessage(ctx.channel.id, wrapInJSCodeblock(err?.stack ?? err));
         }
-    }
+    },
 };
