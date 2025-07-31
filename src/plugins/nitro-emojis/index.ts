@@ -37,7 +37,7 @@ const settings = definePluginSettings({
 let haveNitro = false;
 export default definePlugin({
     name: "Unlock Nitro Emoji's",
-    description: "Unlocks all emoji by spoofing Nitro checks.",
+    description: "Unlocks all emoji's by spoofing Nitro.",
     authors: [Devs.Blaze],
 
     patches: [

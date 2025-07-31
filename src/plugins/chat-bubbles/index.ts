@@ -24,14 +24,14 @@ const settings = definePluginSettings({
         type: "string",
         label: "Bubble Color",
         placeholder: "#RRGGBBAA",
-        description: "The color of the chat bubble (in #RRGGBBAA format). When empty, BG_BASE_TERTIARY is used.",
+        description: "Bubble Color in #RRGGBBAA format. (default: BG_BASE_TERTIARY is used)",
         validate: value => /^#[0-9A-Fa-f]{8}$/.test(value),
     },
 });
 
 export default definePlugin({
     name: "ChatBubbles",
-    description: "Adds customizable chat bubbles to the chat, similar to Flowercord.",
+    description: "Adds custom message bubbles & avatars in chat.",
     authors: [Devs.Blaze],
 
     start() {

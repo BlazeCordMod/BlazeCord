@@ -7,7 +7,7 @@ let originalFreemiumAppIconIds: unknown;
 
 export default definePlugin({
     name: "Unlock Nitro AppIcons",
-    description: "Unlocks all AppIcons by spoofing Nitro checks.",
+    description: "Unlocks all AppIcons by spoofing Nitro.",
     authors: [Devs.Blaze],
 
     patches: [

@@ -5,7 +5,7 @@ import { Devs } from "@data/constants";
 
 export default definePlugin({
     name: "Unlock Nitro Themes",
-    description: "Unlocks all built-in themes by spoofing Nitro checks.",
+    description: "Unlocks all built-in themes by spoofing Nitro.",
     authors: [Devs.Blaze],
 
     patches: [
