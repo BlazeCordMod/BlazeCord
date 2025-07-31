@@ -3,6 +3,7 @@ import { blzlogger } from "@api/logger";
 import { commands as commandsModule, messageUtil } from "@metro/common/libraries";
 import type { ApplicationCommand, BlazeApplicationCommand, Argument, CommandContext, CommandResult } from "./types";
 import { ApplicationCommandInputType, ApplicationCommandType } from "./types"
+//import { default } from '../../../patcher/hook';
 export let commands: BlazeApplicationCommand[] = [];
 
 export function patchAppCommands() {
@@ -27,6 +28,7 @@ export function patchAppCommands() {
         require("./coms/debug").default,
         require("./coms/eval").default,
         require("./coms/ping").default,
+        require("./coms/stealth").default,
     ].forEach((cmdFactory) => registerCommand(cmdFactory()));
 
     return () => {
