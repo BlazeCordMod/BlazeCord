@@ -39,7 +39,7 @@ export default definePlugin({
                         ...origRendererConfig,
                         ..._registeredSettingItems,
                     }),
-                    set: (value) => {
+                    set: value => {
                         Object.defineProperty(module, "SETTING_RENDERER_CONFIG", {
                             writable: true,
                             value,
@@ -57,19 +57,18 @@ export default definePlugin({
             target: byName("SettingsOverviewScreen", { returnEsmDefault: false }),
             patch(module, patcher) {
                 patcher.after(module, "default", (_, ret) => {
-                    const node = findInReactTree(ret, (i) => i?.props?.sections);
+                    const node = findInReactTree(ret, i => i?.props?.sections);
                     if (!node || !Array.isArray(node.props.sections)) {
-                        logger.warn("[Settings] Failed to find sections in SettingsOverviewScreen");
+                        logger.warn("Failed to find settings sections in SettingsOverviewScreen");
                         return;
                     }
 
-                    const sections = node.props.sections;
+                    const alreadyInjected = _registeredSettingSections.every(custom =>
+                        node.props.sections.some((sec: { label?: string }) => sec.label === custom.label)
+                    );
 
-                    for (const customSection of _registeredSettingSections) {
-                        if (!sections.some((sec: any) => sec.label === customSection.label)) {
-                            sections.unshift(customSection);
-                            logger.info(`[Settings] Injected custom section: ${customSection.label}`);
-                        }
+                    if (!alreadyInjected) {
+                        node.props.sections.unshift(..._registeredSettingSections);
                     }
                 });
             },
@@ -78,7 +77,8 @@ export default definePlugin({
 
     start() {
         setImmediate(() => {
-            // Register custom page renderer for pushing components via route params
+            // Hack that allows pushing custom pages without having to register the setting renderer
+            // by passing the component through the route params
             registerSettingRenderer("BLAZECORD_CUSTOM_PAGE", {
                 type: "route",
                 title: () => "",
@@ -95,13 +95,13 @@ export default definePlugin({
                             // biome-ignore lint/correctness/useExhaustiveDependencies: This is fine
                             useLayoutEffect(() => void navigation.setOptions({ ...args }), [navigation]);
 
+                            // TODO: Wrap with ErrorBoundary
                             return <PageComponent />;
                         }),
                     ),
                 },
             });
 
-            // Register main BlazeCord settings section with all sub-pages
             registerSettingSection({
                 label: t.blazecord(),
                 settings: [
@@ -110,7 +110,7 @@ export default definePlugin({
                         title: () => t.blazecord(),
                         IconComponent: () => <TableRow.Icon source={require("@assets/ic_blazecord.png")} />,
                         useTrailing: () => {
-                            const availableUpdate = useUpdaterStore((s) => s.availableUpdate);
+                            const availableUpdate = useUpdaterStore(s => s.availableUpdate);
                             if (availableUpdate) return <Tag text={t.updater.update_tag()} />;
 
                             const { version, branch } = getVersions().blaze;
@@ -161,5 +161,4 @@ export default definePlugin({
             });
         });
     },
-    cleanup() { }
 });
