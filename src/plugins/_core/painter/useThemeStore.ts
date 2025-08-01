@@ -17,14 +17,12 @@ import { AURORA_VIOLET } from "./themes/aurora-violet";
 
 const logger = blzlogger.createChild("ThemeStore");
 const formDividerModule = lookupByProps("DIVIDER_COLORS");
-
 const tokenRefModule = lookupByProps("SemanticColor");
 const UserSettingsActionCreators = lookupByProps("updateTheme", "setShouldSyncAppearanceSettings").asLazy();
 
 interface ThemeStore {
     appliedTheme: string | null;
     currentRef: ThemeRefState | null;
-
     themes: BlazeCordTheme[];
     setThemeRef: (id: string | null) => void;
 }
@@ -121,6 +119,17 @@ export const useThemeStore = create(
                                 description: theme.display.description,
                                 authors: theme.display.authors,
                             }));
+                        }
+
+                        try {
+                            const storedId = state.appliedTheme;
+                            if (storedId) {
+                                // Force re-apply on hydrate
+                                applyTheme(storedId, true);
+                                logger.debug(`Applied theme on rehydrate: ${storedId}`);
+                            }
+                        } catch (e) {
+                            logger.error(`Failed to restore theme on rehydration! ${e}`);
                         }
                     }
                 };
