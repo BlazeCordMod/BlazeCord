@@ -30,7 +30,7 @@ const settings = definePluginSettings({
 });
 
 export default definePlugin({
-    name: "ChatBubbles",
+    name: "Chat Tweaks",
     description: "Adds custom message bubbles & avatars in chat.",
     authors: [Devs.Blaze],
 

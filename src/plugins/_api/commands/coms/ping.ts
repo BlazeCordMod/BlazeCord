@@ -1,12 +1,14 @@
 import { type ApplicationCommand } from "../types";
-import type { Argument, CommandContext, CommandResult } from "../types";
+import { messageUtil } from "@metro/common/libraries";
 
 export default () => <ApplicationCommand>{
     name: "ping",
+    displayName: "ping",
     description: "Pong!",
     options: [],
-    shouldHide: () => false,
-    execute(args: Argument[], ctx: CommandContext): CommandResult {
-        return { content: "Ping these nuts, motherfucker~" };
-    },
+    execute(_, ctx) {
+        messageUtil.sendMessage(ctx.channel.id, {
+            content: "Pong! 🏓"
+        });
+    }
 };

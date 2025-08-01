@@ -1,7 +1,7 @@
 import { Image, ScrollView, View } from "react-native";
 import { useEmojiAdderStore } from "../stores/useEmojiAdderStore";
 import type { PartialGuild, EmojiNode } from "../types";
-import ServerRow from "../components/ServerRow";
+import ServerRow from "./ServerRow";
 import { GuildStore, PermissionStore } from "@metro/common/stores";
 import { FlashList } from "@shopify/flash-list";
 import BottomSheet from "@components/Discord/Sheet/BottomSheet";

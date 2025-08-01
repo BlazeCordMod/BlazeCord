@@ -10,6 +10,7 @@
 	"dependencies": {
 		"@babel/core": "^7.28.0",
 		"@gullerya/object-observer": "^6.1.4",
+		"@react-native-community/blur": "^4.4.1",
 		"@react-native-documents/picker": "^10.1.5",
 		"@shopify/flash-list": "^1.8.3",
 		"@swc/helpers": "^0.5.17",
@@ -21,7 +22,9 @@
 		"immer": "^10.1.1",
 		"node-inspect-extracted": "3.0.2",
 		"react-native-document-picker": "^9.3.1",
+		"react-native-fast-image": "^8.6.3",
 		"react-native-gesture-handler": "^2.27.2",
+		"react-native-image-filter-kit": "^0.8.0",
 		"react-native-reanimated": "3.17.4",
 		"strict-event-emitter": "^0.5.1",
 		"synchronous-promise": "^2.0.17",

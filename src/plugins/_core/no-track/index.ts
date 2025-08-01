@@ -5,7 +5,7 @@ import { definePlugin } from "#plugin-context";
 // This plugin is unfinished... maybe?
 export default definePlugin({
     name: "NoTrack",
-    description: "Prevents Discord's tracking analytics and Sentry crash reporting",
+    description: "Kills Discord's analytics and crash reporting",
     authors: [Devs.Blaze],
     required: true,
 

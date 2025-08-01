@@ -8,7 +8,7 @@ import { applyTheme, useThemeStore } from "./useThemeStore";
 
 export default definePlugin({
     name: "Painter",
-    description: "Provides themes functionalities within BlazeCord",
+    description: "Provides custom themes in BlazeCord",
     authors: [Devs.Blaze],
     required: true,
     start() {

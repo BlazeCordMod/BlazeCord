@@ -1,31 +1,20 @@
-import { definePlugin, definePluginSettings } from "#plugin-context";
+
+import { definePlugin } from "#plugin-context";
 import { showToast } from "@api/toasts";
 import { Devs } from "@data/constants";
 
-// TODO: Remove this once the silent typing plugin is fully implemented
-const toast = showToast("you are typing rn...").hide();
+const toast = showToast("Currently Typing...").hide();
 
-const settings = definePluginSettings({
-    silentTypingActive: {
-        label: "Stealth Mode",
-        description:
-            "Turn on to hide your typing status. This setting syncs with the /silent-typing command for easy toggle.",
-        type: "boolean",
-        default: true,
-    },
-});
-
-// TODO: Easy toggle with command to enable/disable silent typing
 export default definePlugin({
-    name: "Stealth Typing",
+    name: "Stealth Mode",
     description: "Prevent others from seeing your \"is typing...\" status.",
     authors: [Devs.Blaze],
 
     flux: {
         TYPING_START_LOCAL: () => {
-            if (settings.get().silentTypingActive) return false;
-
-            toast.show();
+            // Always block typing indicators when plugin is enabled
+            return false;
+            // Removed settings check - plugin enable/disable controls it completely
         },
     },
 });

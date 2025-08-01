@@ -7,8 +7,8 @@ import { inspect } from "node-inspect-extracted";
 import { establishWebSocketConnection } from "./repl-client";
 
 export default definePlugin({
-    name: "DevToolkit",
-    description: "A toolkit for developers to ease the development process.",
+    name: "Webhook Debugger",
+    description: "Connect to a debugger via webhook.",
     authors: [Devs.Blaze],
     version: "1.0.0",
     start() {
