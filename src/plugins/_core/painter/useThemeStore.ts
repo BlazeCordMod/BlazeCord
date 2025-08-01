@@ -32,7 +32,8 @@ interface ThemeRefState {
     color: ReturnType<typeof parseColorManifest>;
 }
 
-let _inc = 4;
+// FIX: Fuck this
+// let _inc = 4;
 
 export function getCurrentRef() {
     return useThemeStore.getState().currentRef;
@@ -95,10 +96,13 @@ export const useThemeStore = create(
                     const theme = get().themes.find(t => t.id === id);
                     if (!theme) throw new Error(`Theme is not installed: ${id}`);
 
+                    // Generate a stable key from the theme id
+                    const stableKey = `blz-theme-${id.replace(/[^a-z0-9]/gi, "_")}`;
+
                     set({
                         appliedTheme: id,
                         currentRef: {
-                            key: `blz-theme-${_inc++}`,
+                            key: stableKey,
                             color: parseColorManifest(theme),
                         },
                     });
@@ -110,34 +114,34 @@ export const useThemeStore = create(
             version: 2,
             storage: createJSONStorage(() => kvStorage),
             onRehydrateStorage() {
-                return state => {
-                    if (state && state.themes.length !== 0) {
-                        for (const theme of state.themes) {
-                            theme.asAddonMetadata = memoize(() => ({
-                                id: theme.id,
-                                name: theme.display.name,
-                                description: theme.display.description,
-                                authors: theme.display.authors,
-                            }));
+                return (state) => {
+                    if (state) {
+                        // Reapply the theme on store rehydration (app start)
+                        if (state.appliedTheme) {
+                            // Use a small timeout to let Discord's modules load?
+                            setTimeout(() => {
+                                applyTheme(state.appliedTheme, true);
+                            }, 500);
                         }
 
-                        try {
-                            const storedId = state.appliedTheme;
-                            if (storedId) {
-                                // Force re-apply on hydrate
-                                applyTheme(storedId, true);
-                                logger.debug(`Applied theme on rehydrate: ${storedId}`);
+                        if (state.themes.length !== 0) {
+                            for (const theme of state.themes) {
+                                theme.asAddonMetadata = memoize(() => ({
+                                    id: theme.id,
+                                    name: theme.display.name,
+                                    description: theme.display.description,
+                                    authors: theme.display.authors,
+                                }));
                             }
-                        } catch (e) {
-                            logger.error(`Failed to restore theme on rehydration! ${e}`);
                         }
                     }
                 };
             },
-            partialize: s => ({
-                ...s,
-                currentRef: null,
-            }),
+            // We remove the partialize that sets currentRef to null
+            // partialize: s => ({
+            //     ...s,
+            //     currentRef: null,
+            // }),
         },
     ),
 );
