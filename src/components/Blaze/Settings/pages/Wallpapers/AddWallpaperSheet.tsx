@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Platform, Image } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { Button, TextInput, Slider } from "@components/Discord";
 import BottomSheet from "@components/Discord/Sheet/BottomSheet";
 import { hideSheet } from "@components/utils/sheets";
 import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import * as DocumentPicker from "react-native-document-picker";
-import { fileExists } from "@api/fs";
-import { showToast } from "@api/toasts";
+import * as DocumentsNew from "@react-native-documents/picker";
 
 export default function AddWallpaperSheet() {
     const [category, setCategory] = useState("");
@@ -14,80 +13,100 @@ export default function AddWallpaperSheet() {
     const [image, setImage] = useState<{ uri: string; name: string } | null>(null);
     const [opacity, setOpacity] = useState(1);
     const [blur, setBlur] = useState(0);
-    const [error, setError] = useState("");
 
     const addWallpaper = useWallpaperStore(state => state.addWallpaper);
 
     const handlePickImage = async () => {
         try {
-            setError("");
-            const result = await DocumentPicker.pickSingle({
-                type: [DocumentPicker.types.images],
-                copyTo: "documentDirectory",
-            });
+            if (DocumentPicker?.pickSingle) {
+                // Use react-native-document-picker style
+                const file = await DocumentPicker.pickSingle({
+                    type: [DocumentPicker.types.images],
+                    mode: "open",
+                });
 
-            if (!result.uri) {
-                throw new Error("No file selected");
+                if (file) {
+                    if (!file.uri) {
+                        Alert.alert("Error", "Failed to get file URI");
+                        return;
+                    }
+
+                    setImage({
+                        uri: file.uri,
+                        name: file.name ?? "Unknown",
+                    });
+                }
+            } else if (DocumentsNew?.pick) {
+                // Use @react-native-documents/picker style
+                const files = await DocumentsNew.pick({
+                    type: [DocumentsNew.types.images],
+                    allowVirtualFiles: true,
+                    mode: "open",
+                });
+
+                const firstFile = files[0];
+                if (firstFile?.uri) {
+                    const name = firstFile.name ?? "wallpaper.jpg";
+                    let finalUri = firstFile.uri;
+
+                    try {
+                        const keptCopies = await DocumentsNew.keepLocalCopy({
+                            files: [{ fileName: name, uri: firstFile.uri }],
+                            destination: "documentDirectory",
+                        });
+
+                        const result = keptCopies[0];
+                        if (result?.status === "success" && result.localUri) {
+                            finalUri = result.localUri;
+                        }
+                    } catch (copyError) {
+                        console.warn("Failed to create local copy, using original:", copyError);
+                    }
+
+                    setImage({
+                        uri: finalUri.startsWith("file://") ? finalUri : `file://${finalUri}`,
+                        name,
+                    });
+                }
+            }
+        } catch (e) {
+            // Handle cancellation differently for each picker
+            if (DocumentPicker?.isCancel && DocumentPicker.isCancel(e)) {
+                // User cancelled react-native-document-picker
+                return;
             }
 
-            // Using your existing @api/fs module
-            const exists = await fileExists(result.uri);
-            if (!exists) {
-                throw new Error("Cannot access selected file");
+            if (e instanceof Error && e.message.includes("User cancelled")) {
+                // User cancelled @react-native-documents/picker
+                return;
             }
 
-            const finalUri = Platform.OS === 'android' && !result.uri.startsWith('file://')
-                ? `file://${result.uri}`
-                : result.uri;
-
-            setImage({
-                uri: finalUri,
-                name: result.name || "Wallpaper",
-            });
-        } catch (err) {
-            if (!DocumentPicker.isCancel(err)) {
-                setError("Failed to select image");
-                console.error(err);
-            }
+            console.error("Image picker error:", e);
+            Alert.alert("Error", "Failed to select image");
         }
     };
 
-    const handleAdd = async () => {
-        if (!image || !category.trim() || !name.trim()) {
-            setError("Please fill all fields");
+    const handleAdd = () => {
+        if (!image || !category || !name) return;
+
+        if (!image.uri) {
+            Alert.alert("Error", "Invalid image URI");
             return;
         }
 
-        try {
-            // Using your existing @api/fs module
-            const exists = await fileExists(image.uri);
-            if (!exists) {
-                throw new Error("Image file no longer available");
-            }
-
-            addWallpaper(category, {
-                name,
-                image: image.uri,
-                opacity,
-                blur,
-                isBuiltin: false,
-            });
-
-            showToast("Wallpaper added successfully!");
-            hideSheet("AddWallpaperSheet");
-        } catch (err) {
-            setError("Failed to add wallpaper");
-            console.error(err);
-        }
+        addWallpaper(category, {
+            name,
+            image: image.uri,
+            opacity,
+            blur,
+            isBuiltin: false,
+        });
+        hideSheet("AddWallpaperSheet");
     };
 
     return (
         <BottomSheet>
             <View style={styles.container}>
-                {error ? (
-                    <Text style={styles.errorText}>{error}</Text>
-                ) : null}
-
                 <TextInput
                     label="Category Name"
                     placeholder="e.g. Nature"
@@ -103,20 +122,18 @@ export default function AddWallpaperSheet() {
                 />
 
                 <Button
-                    text={image?.name || "Select Image"}
+                    text={image?.name ?? "Select Image"}
                     onPress={handlePickImage}
                     style={styles.selectButton}
                 />
 
                 {image && (
-                    <Image
-                        source={{ uri: image.uri }}
-                        style={[styles.preview, { opacity }]}
-                        resizeMode="contain"
-                    />
+                    <Text style={styles.imageInfo}>
+                        Selected: {image.name}
+                    </Text>
                 )}
 
-                <View style={styles.sliderContainer}>
+                <View style={{ marginVertical: 16 }}>
                     <Text>Opacity: {opacity.toFixed(1)}</Text>
                     <Slider
                         value={opacity}
@@ -127,7 +144,7 @@ export default function AddWallpaperSheet() {
                     />
                 </View>
 
-                <View style={styles.sliderContainer}>
+                <View style={{ marginVertical: 16 }}>
                     <Text>Blur: {blur.toFixed(0)}px</Text>
                     <Slider
                         value={blur}
@@ -160,17 +177,9 @@ const styles = StyleSheet.create({
     addButton: {
         marginTop: 24,
     },
-    preview: {
-        width: '100%',
-        height: 150,
-        marginVertical: 8,
-        borderRadius: 8,
-    },
-    errorText: {
-        color: 'red',
-        marginBottom: 8,
-    },
-    sliderContainer: {
-        marginVertical: 16,
+    imageInfo: {
+        fontSize: 12,
+        color: "#999",
+        marginTop: -8,
     },
 });
