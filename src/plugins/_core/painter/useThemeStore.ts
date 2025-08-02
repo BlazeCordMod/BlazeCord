@@ -14,6 +14,9 @@ import { OCEAN_MIST } from "./themes/ocean-mist";
 import { BLOOD_TERMINAL } from "./themes/red-on-black";
 import { SOLAR_BLOOM } from "./themes/solar-bloom";
 import { AURORA_VIOLET } from "./themes/aurora-violet";
+import { COLD_HEIGHTS } from "./themes/cold-heights";
+import { SUNSET_EMBER } from "./themes/sunset-ember";
+import { FOREST_WHISPER } from './themes/forest-whisper';
 
 const logger = blzlogger.createChild("ThemeStore");
 const formDividerModule = lookupByProps("DIVIDER_COLORS");
@@ -88,7 +91,7 @@ export const useThemeStore = create(
         (set, get) => ({
             appliedTheme: null,
             currentRef: null,
-            themes: [PURPLE_HAZE, OCEAN_MIST, MOCHA_THEME, BLOOD_TERMINAL, ROSIE_PINK_THEME, SOLAR_BLOOM, AURORA_VIOLET],
+            themes: [PURPLE_HAZE, OCEAN_MIST, FOREST_WHISPER, SUNSET_EMBER, COLD_HEIGHTS, MOCHA_THEME, BLOOD_TERMINAL, ROSIE_PINK_THEME, SOLAR_BLOOM],
             setThemeRef: (id: string | null) => {
                 set({ appliedTheme: null, currentRef: null });
 
