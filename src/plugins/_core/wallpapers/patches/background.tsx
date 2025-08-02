@@ -11,7 +11,7 @@ import { useThemeStore } from "../../painter/useThemeStore";
 const Messages = lookupByFilePath("components_native/chat/Messages.tsx").asLazy();
 
 interface BackgroundProps {
-    uri?: string;
+    image?: string;
     blur?: number;
     opacity?: number;
 }
@@ -22,18 +22,17 @@ function getFallbackThemeBackground(): BackgroundProps | undefined {
     return theme?.main.background;
 }
 
-function ChatBackgroundWrapper({ children }: { children: React.ReactNode }) {
+function ThemeBackground({ children }: { children: React.ReactNode }) {
     const { appliedWallpaper, followTheme } = useWallpaperStore.getState();
-    const bg: BackgroundProps | undefined = !followTheme &&
-        appliedWallpaper ? appliedWallpaper : getFallbackThemeBackground();
+    const bg: BackgroundProps | undefined = !followTheme && appliedWallpaper
+        ? appliedWallpaper
+        : getFallbackThemeBackground();
 
-    if (!bg?.uri || bg.uri === "hidden") {
-        return <>{children}</>;
-    }
+    if (!bg?.image || bg.image === "hidden") return <>{children}</>;
 
     return (
         <ImageBackground
-            source={{ uri: bg.uri }}
+            source={{ uri: bg.image }}
             blurRadius={typeof bg.blur === "number" ? bg.blur : 0}
             style={{ flex: 1, height: "100%" }}>
             {children}
@@ -42,7 +41,6 @@ function ChatBackgroundWrapper({ children }: { children: React.ReactNode }) {
 }
 
 export default function patchChatBackground() {
-
     patcher.after(Messages, "render", (_, ret) => {
         const node = findInReactTree(
             ret,
@@ -50,8 +48,9 @@ export default function patchChatBackground() {
         );
 
         const { appliedWallpaper, followTheme } = useWallpaperStore.getState();
-        const bg: BackgroundProps | undefined = !followTheme &&
-            appliedWallpaper ? appliedWallpaper : getFallbackThemeBackground();
+        const bg: BackgroundProps | undefined = !followTheme && appliedWallpaper
+            ? appliedWallpaper
+            : getFallbackThemeBackground();
 
         if (node && bg?.opacity != null) {
             const flat = StyleSheet.flatten(node.props.style) as ViewStyle;
@@ -62,7 +61,8 @@ export default function patchChatBackground() {
             node.props.style = [node.props.style, { backgroundColor: overlay }];
         }
 
-        return <ChatBackgroundWrapper>{ret}</ChatBackgroundWrapper>;
-    }
-    );
+        return <ThemeBackground>{ret}</ThemeBackground>;
+    });
+
+    console.log("[Wallpapers] Chat background patch applied");
 }

@@ -1,8 +1,8 @@
 import React from "react";
 import { ScrollView, View, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useWallpaperStore } from "../../../../../plugins/_core/wallpapers/stores/wallpaperStore";
-import { Button } from "@components/Discord";
+import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import TableSwitchRow from "src/components/Discord/TableRow/TableSwitchRow";
+import FloatingActionButton from "@components/Discord/Button/FloatingActionButton";
 import { findAssetId } from "@api/assets";
 import AddWallpaperSheet from "./AddWallpaperSheet";
 import WallpaperPreviewSheet from "./WallpaperPreviewSheet";
@@ -13,82 +13,97 @@ export default function WallpaperManager() {
     const { categories, followTheme, setFollowTheme } = useWallpaperStore();
 
     return (
-        <ScrollView style={styles.container}>
-            <TableSwitchRow
-                label="Follow Theme"
-                value={followTheme}
-                onValueChange={setFollowTheme}
-            />
+        <View style={styles.wrapper}>
+            <ScrollView style={styles.container}>
+                <TableSwitchRow
+                    label="Follow Theme"
+                    value={followTheme}
+                    onValueChange={setFollowTheme}
+                />
 
-            {categories.map(category => (
-                <View key={category.name} style={styles.categoryContainer}>
-                    <Text variant="heading-sm/semibold" style={styles.categoryTitle}>
-                        {category.name}
-                    </Text>
+                {categories.map(category => (
+                    <View key={category.name} style={styles.categoryContainer}>
+                        <Text
+                            variant="heading-sm/semibold"
+                            style={styles.categoryTitle}
+                        >
+                            {category.name}
+                        </Text>
 
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {category.wallpapers.map(wallpaper => (
-                            <TouchableOpacity
-                                key={wallpaper.name}
-                                onPress={() =>
-                                    showSheet("WallpaperPreviewSheet", WallpaperPreviewSheet, { wallpaper })
-                                }
-                                style={styles.wallpaperThumb}
-                            >
-                                <Image
-                                    source={{ uri: wallpaper.image }}
-                                    style={styles.thumbnail}
-                                />
-                                <Text variant="text-xs/medium" style={styles.wallpaperName}>
-                                    {wallpaper.name}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                </View>
-            ))}
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            {category.wallpapers.map(wallpaper => (
+                                <TouchableOpacity
+                                    key={wallpaper.name}
+                                    onPress={() =>
+                                        showSheet(
+                                            "WallpaperPreviewSheet",
+                                            WallpaperPreviewSheet,
+                                            { wallpaper }
+                                        )
+                                    }
+                                    style={styles.wallpaperThumb}
+                                >
+                                    <Image
+                                        source={{ uri: wallpaper.image }}
+                                        style={styles.thumbnail}
+                                    />
+                                    <Text
+                                        variant="text-xs/medium"
+                                        style={styles.wallpaperName}
+                                    >
+                                        {wallpaper.name}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                    </View>
+                ))}
+            </ScrollView>
 
-            <Button
-                text="Add Custom Background"
-                onPress={() => showSheet("AddWallpaperSheet", AddWallpaperSheet)}
+            <FloatingActionButton
                 icon={findAssetId("PlusIcon")}
-                style={styles.addButton}
+                label="Add"
+                onPress={() =>
+                    showSheet("AddWallpaperSheet", AddWallpaperSheet)
+                }
+                style={styles.fab}
             />
-        </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        position: "relative",
+    },
     container: {
+        flex: 1,
         padding: 16,
     },
-
     categoryContainer: {
         marginBottom: 24,
     },
-
     categoryTitle: {
         marginBottom: 8,
     },
-
     wallpaperThumb: {
         margin: 8,
         alignItems: "center",
         width: 80,
     },
-
     thumbnail: {
         width: 80,
         height: 120,
         borderRadius: 8,
     },
-
     wallpaperName: {
         marginTop: 4,
         textAlign: "center",
     },
-
-    addButton: {
-        marginTop: 16,
+    fab: {
+        position: "absolute",
+        bottom: 24,
+        right: 24,
     },
 });

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Platform, Image } from 'react-native';
-import { Button, Slider, Text } from '@components/Discord';
-import { hideSheet } from '@components/utils/sheets';
-import { showToast } from '@api/toasts';
-import { useWallpaperStore } from '@plugins/_core/wallpapers/stores/wallpaperStore';
-import type { Wallpaper } from '@plugins/_core/wallpapers/stores/wallpaperStore';
+import React, { useState } from "react";
+import { View, StyleSheet, Platform, Image } from "react-native";
+import { Button, Slider, Text } from "@components/Discord";
+import { hideSheet } from "@components/utils/sheets";
+import { showToast } from "@api/toasts";
+import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
+import type { Wallpaper } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 
 interface Props {
     wallpaper: Wallpaper;
@@ -19,16 +19,14 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
         opacity: initialWallpaper?.opacity || 1
     });
 
-    // Close function that works
-    const closeSheet = () => hideSheet('WallpaperPreviewSheet');
+    const closeSheet = () => hideSheet("WallpaperPreviewSheet");
 
-    // Real blur implementation
     const blurStyle = Platform.select({
         ios: {
-            shadowColor: '#000',
+            shadowColor: "#000",
             shadowOpacity: previewSettings.blur / 20,
             shadowRadius: previewSettings.blur / 2,
-            backgroundColor: 'rgba(0,0,0,0.1)'
+            backgroundColor: "rgba(0,0,0,0.1)"
         },
         android: {
             elevation: previewSettings.blur,
@@ -37,64 +35,41 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
         default: {}
     });
 
-    const handleApply = async () => {
-        try {
-            setIsProcessing(true);
-            await applyWallpaper({
-                ...initialWallpaper,
-                blur: previewSettings.blur,
-                opacity: previewSettings.opacity
-            });
-            showToast('Wallpaper applied!');
-            closeSheet();
-        } catch (err) {
-            showToast('Failed to apply wallpaper');
-            console.error(err);
-        } finally {
-            setIsProcessing(false);
-        }
+    const handleApply = () => {
+        setIsProcessing(true);
+        applyWallpaper({
+            ...initialWallpaper,
+            blur: previewSettings.blur,
+            opacity: previewSettings.opacity
+        });
+        showToast("Wallpaper applied!");
+        closeSheet();
+        setIsProcessing(false);
     };
 
-    const handleClear = async () => {
-        try {
-            setIsProcessing(true);
-            await clearWallpaper();
-            showToast('Wallpaper cleared');
-            closeSheet();
-        } catch (err) {
-            showToast('Failed to clear wallpaper');
-            console.error(err);
-        } finally {
-            setIsProcessing(false);
-        }
+    const handleClear = () => {
+        setIsProcessing(true);
+        clearWallpaper();
+        showToast("Wallpaper cleared");
+        closeSheet();
+        setIsProcessing(false);
     };
 
-    const handleDelete = async () => {
-        try {
-            setIsProcessing(true);
-
-            // FIXED: Find the category that contains this wallpaper
-            const category = categories.find(cat =>
-                cat.wallpapers.some(w => w.name === initialWallpaper.name)
-            );
-
-            if (category) {
-                await deleteWallpaper(category.name, initialWallpaper.name);
-                showToast('Wallpaper deleted');
-            }
-
-            closeSheet();
-        } catch (err) {
-            showToast('Failed to delete wallpaper');
-            console.error(err);
-        } finally {
-            setIsProcessing(false);
+    const handleDelete = () => {
+        setIsProcessing(true);
+        const category = categories.find(cat =>
+            cat.wallpapers.some(w => w.name === initialWallpaper.name)
+        );
+        if (category) {
+            deleteWallpaper(category.name, initialWallpaper.name);
+            showToast("Wallpaper deleted");
         }
+        closeSheet();
+        setIsProcessing(false);
     };
 
     return (
         <View style={styles.container}>
-            {/* Preview Section */}
             <View style={styles.previewContainer}>
                 <View style={[styles.blurContainer, blurStyle]}>
                     <Image
@@ -109,13 +84,14 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                 </View>
             </View>
 
-            {/* Controls Section */}
             <View style={styles.controlsContainer}>
                 <View style={styles.sliderGroup}>
                     <Text>Opacity: {previewSettings.opacity.toFixed(1)}</Text>
                     <Slider
                         value={previewSettings.opacity}
-                        onValueChange={val => setPreviewSettings(p => ({ ...p, opacity: val }))}
+                        onValueChange={val =>
+                            setPreviewSettings(p => ({ ...p, opacity: val }))
+                        }
                         minimumValue={0.1}
                         maximumValue={1}
                         step={0.1}
@@ -126,7 +102,9 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                     <Text>Blur: {previewSettings.blur.toFixed(0)}px</Text>
                     <Slider
                         value={previewSettings.blur}
-                        onValueChange={val => setPreviewSettings(p => ({ ...p, blur: val }))}
+                        onValueChange={val =>
+                            setPreviewSettings(p => ({ ...p, blur: val }))
+                        }
                         minimumValue={0}
                         maximumValue={20}
                         step={1}
@@ -164,37 +142,36 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
     );
 }
 
-// Styles remain the same as before
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000',
+        backgroundColor: "#000"
     },
     previewContainer: {
         flex: 2,
-        justifyContent: 'center',
-        overflow: 'hidden',
+        justifyContent: "center",
+        overflow: "hidden"
     },
     blurContainer: {
-        width: '100%',
-        height: '100%',
-        overflow: 'hidden',
+        width: "100%",
+        height: "100%",
+        overflow: "hidden"
     },
     previewImage: {
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%"
     },
     controlsContainer: {
         flex: 1,
         padding: 16,
-        justifyContent: 'space-evenly',
+        justifyContent: "space-evenly"
     },
     sliderGroup: {
-        marginVertical: 8,
+        marginVertical: 8
     },
     buttonGroup: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        flexDirection: "row",
+        justifyContent: "space-around",
         marginTop: 16,
     },
     button: {
