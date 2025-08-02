@@ -7,7 +7,7 @@ const toast = showToast("Currently Typing...").hide();
 
 export default definePlugin({
     name: "Stealth Mode",
-    description: "Prevent others from seeing your \"is typing...\" status.",
+    description: "Prevents you from showing \"is typing...\".",
     authors: [Devs.Blaze],
 
     flux: {
