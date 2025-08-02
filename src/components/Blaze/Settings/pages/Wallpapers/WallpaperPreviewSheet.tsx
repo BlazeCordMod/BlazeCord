@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native'; // Added Platform import
-import FastImage from 'react-native-fast-image';
+import { View, StyleSheet, Platform, Image } from 'react-native';
 import { Button, Slider, Text } from '@components/Discord';
 import { hideSheet } from '@components/utils/sheets';
 import { showToast } from '@api/toasts';
@@ -12,17 +11,22 @@ interface Props {
 }
 
 export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: Props) {
-    const { applyWallpaper, deleteWallpaper, categories } = useWallpaperStore();
+    const { applyWallpaper, deleteWallpaper, clearWallpaper, categories } = useWallpaperStore();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
-    // Local state for live preview
     const [previewSettings, setPreviewSettings] = useState({
-        blur: initialWallpaper.blur ?? 0,
-        opacity: initialWallpaper.opacity ?? 1
+        blur: initialWallpaper?.blur ?? 0,
+        opacity: initialWallpaper?.opacity ?? 1
     });
 
     const handleApply = async () => {
         try {
+            if (!initialWallpaper?.image) {
+                showToast('No image selected');
+                return;
+            }
+
             setIsProcessing(true);
             await applyWallpaper({
                 ...initialWallpaper,
@@ -33,6 +37,20 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
             hideSheet('WallpaperPreviewSheet');
         } catch (err) {
             showToast('Failed to apply wallpaper');
+            console.error(err);
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const handleClear = async () => {
+        try {
+            setIsProcessing(true);
+            await clearWallpaper();
+            showToast('Wallpaper cleared');
+            hideSheet('WallpaperPreviewSheet');
+        } catch (err) {
+            showToast('Failed to clear wallpaper');
             console.error(err);
         } finally {
             setIsProcessing(false);
@@ -59,7 +77,6 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
         }
     };
 
-    // Platform-specific blur effect
     const blurStyle = Platform.select({
         ios: {
             shadowColor: '#000',
@@ -69,24 +86,48 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
         android: {
             backgroundColor: `rgba(0,0,0,${previewSettings.blur / 40})`
         },
-        default: {} // Web/default case
+        default: {}
     });
+
+    if (!initialWallpaper?.image) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.previewContainer}>
+                    <Text style={styles.errorText}>No wallpaper selected</Text>
+                </View>
+                <View style={styles.controlsContainer}>
+                    <Button
+                        text="Clear Wallpaper"
+                        onPress={handleClear}
+                        loading={isProcessing}
+                        disabled={isProcessing}
+                        style={styles.button}
+                    />
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
             {/* Preview Section */}
             <View style={styles.previewContainer}>
-                <FastImage
-                    source={{ uri: initialWallpaper.image }}
-                    style={[
-                        styles.previewImage,
-                        {
-                            opacity: previewSettings.opacity,
-                            ...blurStyle
-                        }
-                    ]}
-                    resizeMode="cover"
-                />
+                {imageError ? (
+                    <Text style={styles.errorText}>Failed to load image</Text>
+                ) : (
+                    <Image
+                        source={{ uri: initialWallpaper.image }}
+                        style={[
+                            styles.previewImage,
+                            {
+                                opacity: previewSettings.opacity,
+                                ...blurStyle
+                            }
+                        ]}
+                        resizeMode="cover"
+                        onError={() => setImageError(true)}
+                    />
+                )}
             </View>
 
             {/* Controls Section */}
@@ -121,6 +162,15 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                         disabled={isProcessing}
                         style={styles.button}
                     />
+
+                    <Button
+                        text="Clear"
+                        onPress={handleClear}
+                        loading={isProcessing}
+                        disabled={isProcessing}
+                        style={styles.button}
+                    />
+
                     {!initialWallpaper.isBuiltin && (
                         <Button
                             text="Delete"
@@ -145,6 +195,7 @@ const styles = StyleSheet.create({
     previewContainer: {
         flex: 2,
         justifyContent: 'center',
+        alignItems: 'center',
     },
     previewImage: {
         width: '100%',
@@ -165,6 +216,10 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        marginHorizontal: 8,
+        marginHorizontal: 4,
+    },
+    errorText: {
+        color: 'white',
+        fontSize: 16,
     }
 });
