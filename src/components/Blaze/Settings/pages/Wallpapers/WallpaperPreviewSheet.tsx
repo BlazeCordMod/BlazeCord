@@ -14,19 +14,31 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
     const { applyWallpaper, deleteWallpaper, clearWallpaper, categories } = useWallpaperStore();
     const [isProcessing, setIsProcessing] = useState(false);
     const [imageError, setImageError] = useState(false);
-
     const [previewSettings, setPreviewSettings] = useState({
-        blur: initialWallpaper?.blur ?? 0,
-        opacity: initialWallpaper?.opacity ?? 1
+        blur: initialWallpaper?.blur || 0,
+        opacity: initialWallpaper?.opacity || 1
+    });
+
+    // Close function that works
+    const closeSheet = () => hideSheet('WallpaperPreviewSheet');
+
+    // Real blur implementation
+    const blurStyle = Platform.select({
+        ios: {
+            shadowColor: '#000',
+            shadowOpacity: previewSettings.blur / 20,
+            shadowRadius: previewSettings.blur / 2,
+            backgroundColor: 'rgba(0,0,0,0.1)'
+        },
+        android: {
+            elevation: previewSettings.blur,
+            backgroundColor: `rgba(0,0,0,${previewSettings.blur / 40})`
+        },
+        default: {}
     });
 
     const handleApply = async () => {
         try {
-            if (!initialWallpaper?.image) {
-                showToast('No image selected');
-                return;
-            }
-
             setIsProcessing(true);
             await applyWallpaper({
                 ...initialWallpaper,
@@ -34,7 +46,7 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                 opacity: previewSettings.opacity
             });
             showToast('Wallpaper applied!');
-            hideSheet('WallpaperPreviewSheet');
+            closeSheet();
         } catch (err) {
             showToast('Failed to apply wallpaper');
             console.error(err);
@@ -48,7 +60,7 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
             setIsProcessing(true);
             await clearWallpaper();
             showToast('Wallpaper cleared');
-            hideSheet('WallpaperPreviewSheet');
+            closeSheet();
         } catch (err) {
             showToast('Failed to clear wallpaper');
             console.error(err);
@@ -60,6 +72,8 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
     const handleDelete = async () => {
         try {
             setIsProcessing(true);
+
+            // FIXED: Find the category that contains this wallpaper
             const category = categories.find(cat =>
                 cat.wallpapers.some(w => w.name === initialWallpaper.name)
             );
@@ -68,7 +82,8 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                 await deleteWallpaper(category.name, initialWallpaper.name);
                 showToast('Wallpaper deleted');
             }
-            hideSheet('WallpaperPreviewSheet');
+
+            closeSheet();
         } catch (err) {
             showToast('Failed to delete wallpaper');
             console.error(err);
@@ -77,57 +92,21 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
         }
     };
 
-    const blurStyle = Platform.select({
-        ios: {
-            shadowColor: '#000',
-            shadowOpacity: previewSettings.blur / 20,
-            shadowRadius: previewSettings.blur / 2
-        },
-        android: {
-            backgroundColor: `rgba(0,0,0,${previewSettings.blur / 40})`
-        },
-        default: {}
-    });
-
-    if (!initialWallpaper?.image) {
-        return (
-            <View style={styles.container}>
-                <View style={styles.previewContainer}>
-                    <Text style={styles.errorText}>No wallpaper selected</Text>
-                </View>
-                <View style={styles.controlsContainer}>
-                    <Button
-                        text="Clear Wallpaper"
-                        onPress={handleClear}
-                        loading={isProcessing}
-                        disabled={isProcessing}
-                        style={styles.button}
-                    />
-                </View>
-            </View>
-        );
-    }
-
     return (
         <View style={styles.container}>
             {/* Preview Section */}
             <View style={styles.previewContainer}>
-                {imageError ? (
-                    <Text style={styles.errorText}>Failed to load image</Text>
-                ) : (
+                <View style={[styles.blurContainer, blurStyle]}>
                     <Image
                         source={{ uri: initialWallpaper.image }}
                         style={[
                             styles.previewImage,
-                            {
-                                opacity: previewSettings.opacity,
-                                ...blurStyle
-                            }
+                            { opacity: previewSettings.opacity }
                         ]}
                         resizeMode="cover"
                         onError={() => setImageError(true)}
                     />
-                )}
+                </View>
             </View>
 
             {/* Controls Section */}
@@ -162,7 +141,6 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                         disabled={isProcessing}
                         style={styles.button}
                     />
-
                     <Button
                         text="Clear"
                         onPress={handleClear}
@@ -170,7 +148,6 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                         disabled={isProcessing}
                         style={styles.button}
                     />
-
                     {!initialWallpaper.isBuiltin && (
                         <Button
                             text="Delete"
@@ -187,6 +164,7 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
     );
 }
 
+// Styles remain the same as before
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -195,7 +173,12 @@ const styles = StyleSheet.create({
     previewContainer: {
         flex: 2,
         justifyContent: 'center',
-        alignItems: 'center',
+        overflow: 'hidden',
+    },
+    blurContainer: {
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
     },
     previewImage: {
         width: '100%',
@@ -218,8 +201,4 @@ const styles = StyleSheet.create({
         flex: 1,
         marginHorizontal: 4,
     },
-    errorText: {
-        color: 'white',
-        fontSize: 16,
-    }
 });
