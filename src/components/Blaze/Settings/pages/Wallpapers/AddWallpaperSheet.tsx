@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { Button, TextInput, Slider, Text } from '@components/Discord';
-import BottomSheet from '@components/Discord/Sheet/BottomSheet';
-import { hideSheet } from '@components/utils/sheets';
-import { showToast } from '@api/toasts';
-import { useWallpaperStore } from '../../../../../plugins/_core/wallpapers/stores/wallpaperStore';
-import * as DocumentPicker from 'react-native-document-picker';
-import { fileExists, writeFile } from '@api/fs';
-import { BlurView } from '@react-native-community/blur';
-import { dirname, join } from 'path';
+import React, { useState } from "react";
+import { View, StyleSheet, Platform } from "react-native";
+import FastImage from "react-native-fast-image";
+import { Button, TextInput, Slider, Text } from "@components/Discord";
+import BottomSheet from "@components/Discord/Sheet/BottomSheet";
+import { hideSheet } from "@components/utils/sheets";
+import { showToast } from "@api/toasts";
+import { useWallpaperStore } from "../../../../../plugins/_core/wallpapers/stores/wallpaperStore";
+import * as DocumentPicker from "react-native-document-picker";
 
 interface ImageSelection {
     uri: string;
@@ -17,8 +14,8 @@ interface ImageSelection {
 }
 
 export default function AddWallpaperSheet() {
-    const [category, setCategory] = useState('');
-    const [name, setName] = useState('');
+    const [category, setCategory] = useState("");
+    const [name, setName] = useState("");
     const [image, setImage] = useState<ImageSelection | null>(null);
     const [opacity, setOpacity] = useState(1);
     const [blur, setBlur] = useState(0);
@@ -28,13 +25,14 @@ export default function AddWallpaperSheet() {
 
     const handlePickImage = async () => {
         try {
+            setIsProcessing(true);
             const result = await DocumentPicker.pickSingle({
                 type: [DocumentPicker.types.images],
-                copyTo: 'documentDirectory',
+                copyTo: "documentDirectory",
             });
 
             if (!result.uri) {
-                showToast('No file selected');
+                showToast("No file selected");
                 return;
             }
 
@@ -42,59 +40,54 @@ export default function AddWallpaperSheet() {
                 ? `file://${result.uri}`
                 : result.uri;
 
-            if (!(await fileExists(finalUri))) {
-                showToast('Cannot access selected file');
-                return;
-            }
-
             setImage({
                 uri: finalUri,
-                name: result.name || 'Wallpaper',
+                name: result.name || "Wallpaper",
             });
         } catch (err) {
             if (!DocumentPicker.isCancel(err)) {
-                showToast('Failed to select image');
+                showToast("Failed to select image");
                 console.error(err);
             }
+        } finally {
+            setIsProcessing(false);
         }
     };
 
     const handleAdd = async () => {
         if (!image || !category.trim() || !name.trim()) {
-            showToast('Please fill all fields');
+            showToast("Please fill all fields");
             return;
         }
 
         try {
             setIsProcessing(true);
-
-            const wallpapersDir = join(dirname(image.uri), 'wallpapers');
-            const wallpaperPath = join(wallpapersDir, `${name.replace(/\s+/g, '_')}_${Date.now()}.wp`);
-
-            await writeFile(wallpaperPath, JSON.stringify({
-                originalUri: image.uri,
-                opacity,
-                blur,
-                name,
-                category
-            }));
-
             addWallpaper(category, {
                 name,
                 image: image.uri,
                 opacity,
                 blur,
-                isBuiltin: false
+                isBuiltin: false,
             });
-
-            showToast('Wallpaper added successfully!');
-            hideSheet('AddWallpaperSheet');
+            showToast("Wallpaper added successfully!");
+            hideSheet("AddWallpaperSheet");
         } catch (err) {
-            showToast('Failed to add wallpaper');
+            showToast("Failed to add wallpaper");
             console.error(err);
         } finally {
             setIsProcessing(false);
         }
+    };
+
+    // Platform-specific blur implementation
+    const renderBlurOverlay = () => {
+        if (blur <= 0) return null;
+
+        return (
+            <View style={[styles.blurOverlay, {
+                backgroundColor: `rgba(0,0,0,${blur / 40})`
+            }]} />
+        );
     };
 
     return (
@@ -115,9 +108,10 @@ export default function AddWallpaperSheet() {
                 />
 
                 <Button
-                    text={image?.name || 'Select Image'}
+                    text={image?.name || "Select Image"}
                     onPress={handlePickImage}
                     style={styles.selectButton}
+                    loading={isProcessing}
                     disabled={isProcessing}
                 />
 
@@ -128,14 +122,7 @@ export default function AddWallpaperSheet() {
                             style={[styles.previewImage, { opacity }]}
                             resizeMode={FastImage.resizeMode.cover}
                         />
-                        {blur > 0 && (
-                            <BlurView
-                                style={styles.blurOverlay}
-                                blurType="light"
-                                blurAmount={blur * 2}
-                                reducedTransparencyFallbackColor="white"
-                            />
-                        )}
+                        {renderBlurOverlay()}
                     </View>
                 )}
 
@@ -164,7 +151,7 @@ export default function AddWallpaperSheet() {
                 <Button
                     text="Add Wallpaper"
                     onPress={handleAdd}
-                    disabled={!image || !category.trim() || !name.trim() || isProcessing}
+                    disabled={!image || !category || !name || isProcessing}
                     style={styles.addButton}
                     loading={isProcessing}
                 />

@@ -23,7 +23,7 @@ export default definePlugin({
             lookup,
             lookupByProps,
             lookupByName,
-            ...require("../../metro/common/filters"),
+            ...require("@metro/common/filters"),
             dk: {
                 patcher,
                 snipe(mod: any, prop: string) {

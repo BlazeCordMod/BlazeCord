@@ -1,6 +1,7 @@
 import { definePlugin, definePluginSettings } from "#plugin-context";
 import { Devs } from "@data/constants";
 import { byProps } from "@metro/common/filters";
+import { FoodIcon } from "@metro/common/icons";
 
 const settings = definePluginSettings({
     stonerName: {
@@ -16,7 +17,7 @@ const settings = definePluginSettings({
         type: "boolean",
         label: "Got the Munchies?",
         description: "Are you feeling snacky right now?",
-        icon: "PizzaIcon", // optional — swap for a fun weed/munchies-related icon if available
+        icon: "FoodIcon", // optional — swap for a fun weed/munchies-related icon if available
     },
     favoriteStrain: {
         type: "select",
