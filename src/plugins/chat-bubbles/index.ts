@@ -24,7 +24,7 @@ const settings = definePluginSettings({
         type: "string",
         label: "Bubble Color",
         placeholder: "#RRGGBBAA",
-        description: "Bubble Color in #RRGGBBAA format. (default: BG_BASE_TERTIARY is used)",
+        description: "Bubble Color as #RRGGBBAA. (default: BG_BASE_TERTIARY)",
         validate: value => /^#[0-9A-Fa-f]{8}$/.test(value),
     },
 });
