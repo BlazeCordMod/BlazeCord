@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Platform, Image } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, StyleSheet, Platform, Image, BackHandler } from "react-native";
 import { Button, Slider, Text } from "@components/Discord";
 import { hideSheet } from "@components/utils/sheets";
 import { showToast } from "@api/toasts";
@@ -14,12 +14,22 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
     const { applyWallpaper, deleteWallpaper, clearWallpaper, categories } = useWallpaperStore();
     const [isProcessing, setIsProcessing] = useState(false);
     const [imageError, setImageError] = useState(false);
+
     const [previewSettings, setPreviewSettings] = useState({
         blur: initialWallpaper?.blur || 0,
         opacity: initialWallpaper?.opacity || 1
     });
 
-    const closeSheet = () => hideSheet("WallpaperPreviewSheet");
+    const closeSheet = useCallback(() => hideSheet("WallpaperPreviewSheet"), []);
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+            closeSheet();
+            return true;
+        });
+
+        return () => backHandler.remove();
+    }, [closeSheet]);
 
     const blurStyle = Platform.select({
         ios: {
@@ -35,38 +45,37 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
         default: {}
     });
 
-    const handleApply = () => {
-        setIsProcessing(true);
-        applyWallpaper({
-            ...initialWallpaper,
-            blur: previewSettings.blur,
-            opacity: previewSettings.opacity
-        });
-        showToast("Wallpaper applied!");
-        closeSheet();
-        setIsProcessing(false);
-    };
-
-    const handleClear = () => {
-        setIsProcessing(true);
-        clearWallpaper();
-        showToast("Wallpaper cleared");
-        closeSheet();
-        setIsProcessing(false);
-    };
-
-    const handleDelete = () => {
-        setIsProcessing(true);
-        const category = categories.find(cat =>
-            cat.wallpapers.some(w => w.name === initialWallpaper.name)
-        );
-        if (category) {
-            deleteWallpaper(category.name, initialWallpaper.name);
-            showToast("Wallpaper deleted");
+    const handleAction = async (action: () => void | Promise<void>, toastMsg: string) => {
+        try {
+            setIsProcessing(true);
+            await action();
+            showToast(toastMsg);
+            closeSheet();
+        } finally {
+            setIsProcessing(false);
         }
-        closeSheet();
-        setIsProcessing(false);
     };
+
+    const handleApply = () =>
+        handleAction(() => {
+            applyWallpaper({
+                ...initialWallpaper,
+                blur: previewSettings.blur,
+                opacity: previewSettings.opacity
+            });
+        }, "Wallpaper applied!");
+
+    const handleClear = () => handleAction(clearWallpaper, "Wallpaper cleared");
+
+    const handleDelete = () =>
+        handleAction(() => {
+            const category = categories.find(cat =>
+                cat.wallpapers.some(w => w.name === initialWallpaper.name)
+            );
+            if (category) {
+                deleteWallpaper(category.name, initialWallpaper.name);
+            }
+        }, "Wallpaper deleted");
 
     return (
         <View style={styles.container}>
@@ -74,10 +83,7 @@ export default function WallpaperPreviewSheet({ wallpaper: initialWallpaper }: P
                 <View style={[styles.blurContainer, blurStyle]}>
                     <Image
                         source={{ uri: initialWallpaper.image }}
-                        style={[
-                            styles.previewImage,
-                            { opacity: previewSettings.opacity }
-                        ]}
+                        style={[styles.previewImage, { opacity: previewSettings.opacity }]}
                         resizeMode="cover"
                         onError={() => setImageError(true)}
                     />
@@ -172,10 +178,10 @@ const styles = StyleSheet.create({
     buttonGroup: {
         flexDirection: "row",
         justifyContent: "space-around",
-        marginTop: 16,
+        marginTop: 16
     },
     button: {
         flex: 1,
-        marginHorizontal: 4,
-    },
+        marginHorizontal: 4
+    }
 });
