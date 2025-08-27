@@ -48,9 +48,12 @@ export default function WallpaperPreviewSheet({ wallpaper }: Props) {
     };
 
     const handleDelete = () => {
+        if (wallpaper.isBuiltin) return;
+
         const category = categories.find(cat =>
             cat.wallpapers.some(w => w.name === wallpaper.name)
         );
+
         if (category) {
             deleteWallpaper(category.name, wallpaper.name);
             hideSheet("WallpaperPreviewSheet");
@@ -65,6 +68,7 @@ export default function WallpaperPreviewSheet({ wallpaper }: Props) {
                 blurRadius={blurAmount}
                 resizeMode="cover"
             />
+
             <View style={styles.controls}>
                 <Text>Opacity: {opacity.toFixed(2)}</Text>
                 <Slider
@@ -74,14 +78,16 @@ export default function WallpaperPreviewSheet({ wallpaper }: Props) {
                     step={0.01}
                     onValueChange={setOpacity}
                 />
+
                 <Text>Blur: {blurAmount.toFixed(0)}px</Text>
                 <Slider
                     value={blurAmount}
                     minimumValue={0}
-                    maximumValue={25}
-                    step={1}
+                    maximumValue={10}
+                    step={.1}
                     onValueChange={setBlurAmount}
                 />
+
                 <View style={styles.buttonsRow}>
                     <Button text="Apply" onPress={handleApply} />
                     <Button text="Clear" onPress={handleClear} disabled={!isActive} />

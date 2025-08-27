@@ -139,15 +139,15 @@ export default definePlugin({
                             getComponent: () => require("@components/Blaze/Settings/pages/Themes").default,
                         },
                     }),
-                    registerSettingRenderer("BLAZECORD_WALLPAPERS", {
-                        type: "route",
-                        title: () => t.settings.sections.wallpapers(),
-                        IconComponent: ImageIcon,
-                        screen: {
-                            route: "BLAZECORD_WALLPAPERS",
-                            getComponent: () => require("@components/Blaze/Settings/pages/Wallpapers").default,
-                        },
-                    }),
+                    // registerSettingRenderer("BLAZECORD_WALLPAPERS", {
+                    //     type: "route",
+                    //     title: () => t.settings.sections.wallpapers(),
+                    //     IconComponent: ImageIcon,
+                    //     screen: {
+                    //         route: "BLAZECORD_WALLPAPERS",
+                    //         getComponent: () => require("@components/Blaze/Settings/pages/Wallpapers").default,
+                    //     },
+                    // }),
                     registerSettingRenderer("BLAZECORD_DEVELOPER", {
                         type: "route",
                         title: () => t.settings.sections.developer(),

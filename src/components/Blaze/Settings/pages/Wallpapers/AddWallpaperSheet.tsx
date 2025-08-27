@@ -133,30 +133,6 @@ export default function AddWallpaperSheet() {
                     </Text>
                 )}
 
-
-                {/* <View style={{ marginVertical: 16 }}>
-                    <Text>Opacity: {opacity.toFixed(1)}</Text>
-                    <Slider
-                        value={opacity}
-                        onValueChange={setOpacity}
-                        minimumValue={0.1}
-                        maximumValue={1}
-                        step={0.1}
-                    />
-                </View>
-
-
-                <View style={{ marginVertical: 16 }}>
-                    <Text>Blur: {blur.toFixed(0)}px</Text>
-                    <Slider
-                        value={blur}
-                        onValueChange={setBlur}
-                        minimumValue={0}
-                        maximumValue={20}
-                        step={1}
-                    />
-                </View> */}
-
                 <Button
                     text="Add Wallpaper"
                     onPress={handleAdd}
