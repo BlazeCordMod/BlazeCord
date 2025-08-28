@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { View, Image, StyleSheet, Dimensions, BackHandler } from "react-native";
-import { Button, Slider, Text } from "@components/Discord";
+import { BottomSheet, Button, Slider, Text } from "@components/Discord";
 import { hideSheet } from "@components/utils/sheets";
 import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import type { Wallpaper } from "@plugins/_core/wallpapers/stores/wallpaperStore";
@@ -61,42 +61,44 @@ export default function WallpaperPreviewSheet({ wallpaper }: Props) {
     };
 
     return (
-        <View style={styles.container}>
-            <Image
-                source={{ uri: wallpaper.image }}
-                style={[styles.image, { opacity, width: screenWidth, height: screenHeight }]}
-                blurRadius={blurAmount}
-                resizeMode="cover"
-            />
-
-            <View style={styles.controls}>
-                <Text>Opacity: {opacity.toFixed(2)}</Text>
-                <Slider
-                    value={opacity}
-                    minimumValue={0.1}
-                    maximumValue={1}
-                    step={0.01}
-                    onValueChange={setOpacity}
+        <BottomSheet>
+            <View style={styles.container}>
+                <Image
+                    source={{ uri: wallpaper.image }}
+                    style={[styles.image, { opacity, width: screenWidth, height: screenHeight }]}
+                    blurRadius={blurAmount}
+                    resizeMode="cover"
                 />
 
-                <Text>Blur: {blurAmount.toFixed(0)}px</Text>
-                <Slider
-                    value={blurAmount}
-                    minimumValue={0}
-                    maximumValue={10}
-                    step={.1}
-                    onValueChange={setBlurAmount}
-                />
+                <View style={styles.controls}>
+                    <Text>Opacity: {opacity.toFixed(2)}</Text>
+                    <Slider
+                        value={opacity}
+                        minimumValue={0.1}
+                        maximumValue={1}
+                        step={0.01}
+                        onValueChange={setOpacity}
+                    />
 
-                <View style={styles.buttonsRow}>
-                    <Button text="Apply" onPress={handleApply} />
-                    <Button text="Clear" onPress={handleClear} disabled={!isActive} />
-                    {!wallpaper.isBuiltin && (
-                        <Button text="Delete" color="danger" onPress={handleDelete} />
-                    )}
+                    <Text>Blur: {blurAmount.toFixed(0)}px</Text>
+                    <Slider
+                        value={blurAmount}
+                        minimumValue={0}
+                        maximumValue={10}
+                        step={.1}
+                        onValueChange={setBlurAmount}
+                    />
+
+                    <View style={styles.buttonsRow}>
+                        <Button text="Apply" onPress={handleApply} />
+                        <Button text="Clear" onPress={handleClear} disabled={!isActive} />
+                        {!wallpaper.isBuiltin && (
+                            <Button text="Delete" color="danger" onPress={handleDelete} />
+                        )}
+                    </View>
                 </View>
             </View>
-        </View>
+        </BottomSheet>
     );
 }
 
