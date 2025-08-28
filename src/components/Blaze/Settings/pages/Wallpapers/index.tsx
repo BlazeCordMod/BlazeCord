@@ -1,24 +1,23 @@
-import React from "react";
 import { ScrollView, View, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { useWallpaperStore } from "../../../../../plugins/_core/wallpapers/stores/wallpaperStore";
-import { Button } from "@components/Discord";
+import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
+import { Button, Text } from "@components/Discord";
 import TableSwitchRow from "src/components/Discord/TableRow/TableSwitchRow";
 import { findAssetId } from "@api/assets";
 import AddWallpaperSheet from "./AddWallpaperSheet";
-import WallpaperPreviewSheet from "./WallpaperPreviewSheet";
+import WallpaperPreviewScreen from "./WallpaperPreviewScreen";
 import { showSheet } from "src/components/utils/sheets";
-import Text from "@components/Discord/Text/Text";
+import { NavigationNative } from "@metro/common/libraries";
 
 export default function WallpaperManager() {
     const { categories, followTheme, setFollowTheme } = useWallpaperStore();
+    const navigation = NavigationNative.useNavigation();
 
     return (
         <ScrollView style={styles.container}>
             <TableSwitchRow
                 label="Follow Theme"
                 value={followTheme}
-                onValueChange={setFollowTheme}
-            />
+                onValueChange={setFollowTheme} />
 
             {categories.map(category => (
                 <View key={category.name} style={styles.categoryContainer}>
@@ -31,14 +30,16 @@ export default function WallpaperManager() {
                             <TouchableOpacity
                                 key={wallpaper.name}
                                 onPress={() =>
-                                    showSheet("WallpaperPreviewSheet", WallpaperPreviewSheet, { wallpaper })
+                                    navigation.push("BLAZECORD_CUSTOM_PAGE", {
+                                        title: wallpaper.name,
+                                        render: () => <WallpaperPreviewScreen wallpaper={wallpaper} />,
+                                    })
                                 }
-                                style={styles.wallpaperThumb}
-                            >
+                                style={styles.wallpaperThumb}>
                                 <Image
                                     source={{ uri: wallpaper.image }}
-                                    style={styles.thumbnail}
-                                />
+                                    style={styles.thumbnail} />
+
                                 <Text variant="text-xs/medium" style={styles.wallpaperName}>
                                     {wallpaper.name}
                                 </Text>
@@ -52,8 +53,7 @@ export default function WallpaperManager() {
                 text="Add Custom Background"
                 onPress={() => showSheet("AddWallpaperSheet", AddWallpaperSheet)}
                 icon={findAssetId("PlusIcon")}
-                style={styles.addButton}
-            />
+                style={styles.addButton} />
         </ScrollView>
     );
 }
@@ -62,32 +62,26 @@ const styles = StyleSheet.create({
     container: {
         padding: 16,
     },
-
     categoryContainer: {
         marginBottom: 24,
     },
-
     categoryTitle: {
         marginBottom: 8,
     },
-
     wallpaperThumb: {
         margin: 8,
         alignItems: "center",
         width: 80,
     },
-
     thumbnail: {
         width: 80,
         height: 120,
         borderRadius: 8,
     },
-
     wallpaperName: {
         marginTop: 4,
         textAlign: "center",
     },
-
     addButton: {
         marginTop: 16,
     },

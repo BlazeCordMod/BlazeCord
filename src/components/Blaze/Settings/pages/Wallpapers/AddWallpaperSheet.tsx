@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import { Button, TextInput, Slider } from "@components/Discord";
+import { useState } from "react";
+import { View, StyleSheet, Alert } from "react-native";
+import { Button, Text, TextInput } from "@components/Discord";
 import BottomSheet from "@components/Discord/Sheet/BottomSheet";
 import { hideSheet } from "@components/utils/sheets";
 import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
