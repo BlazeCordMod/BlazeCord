@@ -1,7 +1,7 @@
 import Callout from "@components/Blaze/Callout";
 import { t } from "@i18n";
 import { View } from "react-native";
-import PageWrapper from "../../PageWrapper";
+import PageWrapper from "../PageWrapper";
 import { ResponsiveMasonryFlashList } from "../ResponsiveMasonryFlashList";
 import AddonCard from "./AddonCard";
 import { HighlightProvider } from "./SearchTermHighlight";

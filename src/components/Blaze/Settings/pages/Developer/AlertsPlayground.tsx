@@ -2,7 +2,7 @@ import { dismissAlert, showAlert } from "@api/alerts";
 import { Button, Card, RowButton, Stack, Text } from "@components/Discord";
 import { AlertActionButton, AlertModal, useDismissModalCallback } from "@components/Discord/AlertModal/AlertModal";
 import { InlineCheckbox } from "@components/Blaze/InlineCheckbox";
-import PageWrapper from "@components/Blaze/Settings/PageWrapper";
+import PageWrapper from "@components/Blaze/Settings/pages/PageWrapper";
 import { delay, noop } from "es-toolkit";
 import { useEffect, useState } from "react";
 

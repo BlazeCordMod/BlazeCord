@@ -1,7 +1,7 @@
 import { t } from "@i18n";
 import { findAssetId } from "@api/assets";
 import { TableRow, TableRowGroup, TableSwitchRow, Text, TextInput } from "@components/Discord";
-import PageWrapper from "../../PageWrapper";
+import PageWrapper from "../PageWrapper";
 import { NavigationNative } from "@metro/common/libraries";
 import { MetroCache } from "@metro/internal/caches";
 import { useInitConfigStore } from "@stores/useInitConfigStore";

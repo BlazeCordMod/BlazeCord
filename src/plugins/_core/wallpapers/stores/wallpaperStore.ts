@@ -67,22 +67,21 @@ export const useWallpaperStore = create<WallpaperStore>()(
                 }),
 
             deleteWallpaper: (categoryName, name) =>
-                set(state => ({
-                    categories: state.categories.map(cat =>
-                        cat.name === categoryName
-                            ? { ...cat, wallpapers: cat.wallpapers.filter(w => w.name !== name || w.isBuiltin) }
-                            : cat
-                    ),
-                })),
+                set(state => {
+                    const updatedCategories = state.categories.map(cat =>
+                        cat.name === categoryName ? { ...cat, wallpapers: cat.wallpapers.filter(w => w.name !== name || w.isBuiltin) } : cat
+                    );
+                    const finalCategories = updatedCategories.filter(cat =>
+                        cat.wallpapers.length > 0 ||
+                        cat.wallpapers.some(w => w.isBuiltin)
+                    );
+                    return { categories: finalCategories };
+                }),
 
             applyWallpaper: wallpaper => set({ appliedWallpaper: wallpaper }),
-
             clearWallpaper: () => set({ appliedWallpaper: undefined }),
-
             setFollowTheme: value => set({ followTheme: value }),
-
             setBlurAmount: blur => set({ blurAmount: blur }),
-
             setOpacity: opacity => set({ opacity }),
         }),
         {

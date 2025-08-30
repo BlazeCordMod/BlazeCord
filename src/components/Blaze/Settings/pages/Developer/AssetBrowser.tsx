@@ -3,7 +3,7 @@ import { type Asset, getAssets } from "@api/assets";
 import { Image, View, useWindowDimensions } from "react-native";
 import { showSheet } from "@components/utils/sheets";
 import Search, { useSearchQuery } from "@components/Blaze/Search";
-import PageWrapper from "@components/Blaze/Settings/PageWrapper";
+import PageWrapper from "@components/Blaze/Settings/pages/PageWrapper";
 import { FlashList } from "@shopify/flash-list";
 import { Stack, TableRow, TableRowGroup } from "@components/Discord";
 import BottomSheet from "@components/Discord/Sheet/BottomSheet";

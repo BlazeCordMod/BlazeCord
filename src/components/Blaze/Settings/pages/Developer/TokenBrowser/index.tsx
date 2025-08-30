@@ -1,5 +1,5 @@
 import { TableRow, TableRowGroup } from "@components/Discord";
-import PageWrapper from "@components/Blaze/Settings/PageWrapper";
+import PageWrapper from "@components/Blaze/Settings/pages/PageWrapper";
 import { NavigationNative } from "@metro/common/libraries";
 
 export default function TokenBrowser() {

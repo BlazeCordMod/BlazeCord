@@ -1,5 +1,5 @@
 import Callout from "@components/Blaze/Callout";
-import PageWrapper from "@components/Blaze/Settings/PageWrapper";
+import PageWrapper from "@components/Blaze/Settings/pages/PageWrapper";
 
 export default function CalloutPlayground() {
     return (

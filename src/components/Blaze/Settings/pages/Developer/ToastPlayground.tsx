@@ -1,7 +1,7 @@
 import { blzlogger } from "@api/logger";
 import { showToast, type CustomToastProps, type ToastProps } from "@api/toasts";
 import { RowButton, TableRow, TableRowGroup, TableSwitchRow, Text, TextInput } from "@components/Discord";
-import PageWrapper from "@components/Blaze/Settings/PageWrapper";
+import PageWrapper from "@components/Blaze/Settings/pages/PageWrapper";
 import { useEffect, useState, type ReactNode } from "react";
 import { ActivityIndicator, View, ScrollView } from "react-native";
 

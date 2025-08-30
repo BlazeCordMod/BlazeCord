@@ -1,6 +1,6 @@
 import { TableRow, TableRowGroup, TableSwitchRow } from "@components/Discord";
 import Button from "@components/Discord/Button/Button";
-import PageWrapper from "@components/Blaze/Settings/PageWrapper";
+import PageWrapper from "@components/Blaze/Settings/pages/PageWrapper";
 import { t } from "@i18n";
 import { getVersions } from "@debug/info";
 import { } from "@components/Discord/AlertModal/AlertModal";

@@ -1,6 +1,6 @@
 import { t } from "@i18n";
 import { findAssetId } from "@api/assets";
-import PageWrapper from "../../PageWrapper";
+import PageWrapper from "../PageWrapper";
 import { getVersions } from "@debug/info";
 import { TableRow, TableRowGroup, TableSwitchRow } from "@components/Discord";
 import { View } from "react-native";
