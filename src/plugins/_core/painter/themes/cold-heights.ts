@@ -6,8 +6,8 @@ export const COLD_HEIGHTS: BlazeCordTheme = {
   type: "theme",
   display: {
     name: "Cold Heights",
-    description: "A cool, icy blue theme inspired by cold mountain heights.",
-    authors: [{ name: "Repainter Community", id: "300547560840495104" }],
+    description: "An icy blue theme inspired by cold mountain heights.",
+    authors: [{ name: "Blaze", id: "300547560840495104" }],
   },
   main: {
     base: "dark",
@@ -187,8 +187,8 @@ export const COLD_HEIGHTS: BlazeCordTheme = {
         YELLOW_830: "#000000",
         YELLOW_860: "#000000",
         YELLOW_900: "#000000",
-        WHITE: "#111f29",
-        WHITE_500: "#111f29",
+        WHITE: "#5bc1e3",
+        WHITE_500: "#5bc1e3",
       },
     },
   },

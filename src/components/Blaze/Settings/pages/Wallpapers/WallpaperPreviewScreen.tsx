@@ -3,7 +3,8 @@ import { Button, Slider, Text } from "@components/Discord";
 import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import type { Wallpaper } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import { NavigationNative } from "@metro/common/libraries";
-
+import { showToast } from "@api/toasts";
+import { ImageIcon, RefreshIcon, TrashIcon } from "@metro/common/icons";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 interface Props { wallpaper: Wallpaper }
@@ -27,11 +28,23 @@ export default function WallpaperPreviewScreen({ wallpaper }: Props) {
 
     const handleApply = () => {
         applyWallpaper(wallpaper);
+        showToast("Wallpaper Set`");
+        showToast({
+            id: "wallpaper-set",
+            text: "Wallpaper set!",
+            icon: ImageIcon, // or <SomeIconComponent />
+        });
         navigation.goBack();
     };
 
     const handleClear = () => {
         clearWallpaper();
+        //showToast("Wallpaper Cleared~");
+        showToast({
+            id: "wallpaper-cleared",
+            text: "Wallpaper Cleared~",
+            icon: RefreshIcon, // or <SomeIconComponent />
+        });
         navigation.goBack();
     };
 
@@ -44,6 +57,12 @@ export default function WallpaperPreviewScreen({ wallpaper }: Props) {
 
         if (category) {
             deleteWallpaper(category.name, wallpaper.name);
+            showToast({
+                id: "wallpaper-deleted",
+                text: "Wallpaper Deleted",
+                icon: TrashIcon, // or <SomeIconComponent />
+            });
+            //showToast("Wallpaper Deleted-");
             navigation.goBack();
         }
     };
@@ -90,15 +109,18 @@ export default function WallpaperPreviewScreen({ wallpaper }: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#000" },
-    image: { position: "absolute", top: 0, left: 0 },
+    container: { flex: 1 },
+    image: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+    },
     controls: {
         position: "absolute",
         bottom: 32,
         left: 16,
         right: 16,
         gap: 12,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
         padding: 16,
         borderRadius: 8,
     },

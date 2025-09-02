@@ -15,6 +15,7 @@ export interface AddonMetadata {
     name: string;
     description: string;
     authors: { name: string }[];
+    icon?: React.ComponentType;
 }
 
 export type Addon = { asAddonMetadata(): AddonMetadata };

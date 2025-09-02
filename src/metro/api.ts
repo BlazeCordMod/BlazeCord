@@ -1,4 +1,5 @@
 import type { ModuleFilter } from "./filters";
+import { LazyModuleContext } from "./lazy";
 import { createCacheHandler, iterateModulesForCache } from "./internal/caches";
 import { metroEvents } from "./internal/events";
 import { moduleRegistry } from "./internal/registry";
@@ -58,4 +59,37 @@ export function findIdAndResolved<A, R, O>(filter: ModuleFilter<A, R, O>) {
  */
 export function lookup<A, R, O>(filter: ModuleFilter<A, R, O>) {
     return new SingleMetroModule(filter);
+}
+
+
+/**
+ * Returns an array of the exports of all modules where filter returns non-undefined.
+ * @param filter find calls filter once for each enumerable module's exports.
+ */
+export function lookupAll<A, R, O>(filter: ModuleFilter<A, R, O>): R[] {
+    const results: R[] = [];
+    for (const { resolved } of _iterateModule(filter, true)) {
+        results.push(resolved);
+    }
+    return results;
+}
+
+/**
+ * Creates a lazy proxy that resolves the module on first property access.
+ * @param filter The filter to find the module.
+ * @returns A proxy that resolves to the found module's exports.
+ */
+export function lookupLazy<A, R, O>(filter: ModuleFilter<A, R, O>): R {
+    const module = new SingleMetroModule(filter);
+    const lazyContext = new LazyModuleContext(module);
+    return lazyContext.proxy();
+}
+
+/**
+ * Returns an iterator that yields all modules (id and exports) where filter returns non-undefined.
+ * Useful for processing large numbers of matches without building an array.
+ * @param filter The filter to match modules.
+ */
+export function iterateModules<A, R, O>(filter: ModuleFilter<A, R, O>): IterableIterator<{ id: number; resolved: R }> {
+    return _iterateModule(filter, true);
 }

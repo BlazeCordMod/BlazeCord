@@ -25,6 +25,7 @@ export interface WallpaperStore {
     deleteWallpaper: (category: string, name: string) => void;
     applyWallpaper: (wallpaper: Wallpaper) => void;
     clearWallpaper: () => void;
+    setCategories: (categories: WallpaperCategory[]) => void;
     setFollowTheme: (value: boolean) => void;
     setBlurAmount: (blur: number) => void;
     setOpacity: (opacity: number) => void;
@@ -79,9 +80,15 @@ export const useWallpaperStore = create<WallpaperStore>()(
                 }),
 
             applyWallpaper: wallpaper => set({ appliedWallpaper: wallpaper }),
+
             clearWallpaper: () => set({ appliedWallpaper: undefined }),
+
+            setCategories: (categories) => set({ categories }),
+
             setFollowTheme: value => set({ followTheme: value }),
+
             setBlurAmount: blur => set({ blurAmount: blur }),
+
             setOpacity: opacity => set({ opacity }),
         }),
         {

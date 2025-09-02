@@ -5,6 +5,7 @@ import FormSwitch from "@components/Discord/Forms/FormSwitch";
 import { Card, Stack, Text } from "@components/Discord";
 import type { Addon, AddonPageProps } from ".";
 import { useHighlightedSearchTerm } from "./SearchTermHighlight";
+import BlazecordIcon from "@data/BlazecordIcon";
 
 interface AddonCardProps<T extends Addon> {
     addon: T;
@@ -12,10 +13,13 @@ interface AddonCardProps<T extends Addon> {
 }
 
 function CardHeader<T extends Addon>({ addon }: { addon: T }) {
+    const HeaderIcon = addon.asAddonMetadata().icon || BlazecordIcon;
     const HeaderText = useHighlightedSearchTerm(0);
+
 
     return (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+            <HeaderIcon />
             <HeaderText variant="heading-lg/semibold" />
         </View>
     );
