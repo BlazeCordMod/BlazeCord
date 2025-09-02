@@ -1,7 +1,7 @@
 import type { AddonMetadata } from "@components/Blaze/Settings/pages/Addon";
 import type { BlazeCordTheme } from "../types";
 
-export const ROSIE_PINK_THEME: BlazeCordTheme = {
+export const ROSE_PINK: BlazeCordTheme = {
     id: "rose.pink",
     type: "theme",
     display: {

@@ -1,11 +1,11 @@
 import type { AddonMetadata } from "@components/Blaze/Settings/pages/Addon";
 import type { BlazeCordTheme } from "../types";
 
-export const BLOOD_TERMINAL: BlazeCordTheme = {
-    id: "blood.terminal",
+export const RED_ON_BLACK: BlazeCordTheme = {
+    id: "blood.terminal2",
     type: "theme",
     display: {
-        name: "Blood Terminal",
+        name: "Blood Terminal2",
         description: "A red on black theme.",
         authors: [{ name: "Blaze", id: "300547560840495104" }],
     },
