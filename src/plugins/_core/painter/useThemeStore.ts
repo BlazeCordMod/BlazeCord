@@ -7,16 +7,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { parseColorManifest } from "./parser";
 import type { BlazeCordTheme } from "./types";
 
-import { PURPLE_HAZE } from "./themes/purple-haze";
-import { MOCHA_THEME } from "./themes/catppuccin-mocha";
-import { ROSIE_PINK_THEME } from "./themes/rose-pink";
-import { OCEAN_MIST } from "./themes/ocean-mist";
-import { BLOOD_TERMINAL } from "./themes/red-on-black";
-import { SOLAR_BLOOM } from "./themes/solar-bloom";
-import { AURORA_VIOLET } from "./themes/aurora-violet";
-import { COLD_HEIGHTS } from "./themes/cold-heights";
-import { SUNSET_EMBER } from "./themes/sunset-ember";
-import { FOREST_WHISPER } from './themes/forest-whisper';
+import { ALL_THEMES } from "./themes";
 
 const logger = blzlogger.createChild("ThemeStore");
 const formDividerModule = lookupByProps("DIVIDER_COLORS");
@@ -91,7 +82,7 @@ export const useThemeStore = create(
         (set, get) => ({
             appliedTheme: null,
             currentRef: null,
-            themes: [PURPLE_HAZE, OCEAN_MIST, FOREST_WHISPER, SUNSET_EMBER, COLD_HEIGHTS, MOCHA_THEME, BLOOD_TERMINAL, ROSIE_PINK_THEME, SOLAR_BLOOM],
+            themes: ALL_THEMES,//[PURPLE_HAZE, OCEAN_MIST, FOREST_WHISPER, SUNSET_EMBER, COLD_HEIGHTS, MOCHA_THEME, BLOOD_TERMINAL, ROSIE_PINK_THEME, SOLAR_BLOOM],
             setThemeRef: (id: string | null) => {
                 set({ appliedTheme: null, currentRef: null });
 
@@ -124,7 +115,7 @@ export const useThemeStore = create(
                             // Use a small timeout to let Discord's modules load?
                             setTimeout(() => {
                                 applyTheme(state.appliedTheme, true);
-                            }, 500);
+                            }, 250);
                         }
 
                         if (state.themes.length !== 0) {
