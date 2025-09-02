@@ -62,6 +62,14 @@ export const byWriteableProp = createModuleFilter(
     }),
 ) as Filter<ByWritableProp>;
 
+// Blaze Wuz Here
+export const byStoreName = createModuleFilter(
+    withInteropOptions<string>({
+        filter: ([name, m]) => m.constructor?.displayName === name && m.getName() === name,
+        stringify: arg => `byStoreName(${arg})`,
+    }),
+);
+
 // type ByDisplayName = <T extends string>(
 //     displayName: T,
 //     options?: InteropOption,

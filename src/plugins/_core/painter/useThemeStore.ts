@@ -6,7 +6,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { parseColorManifest } from "./parser";
 import type { BlazeCordTheme } from "./types";
-
 import { ALL_THEMES } from "./themes";
 
 const logger = blzlogger.createChild("ThemeStore");
@@ -26,14 +25,14 @@ interface ThemeRefState {
     color: ReturnType<typeof parseColorManifest>;
 }
 
-// FIX: Fuck this
+// FIX: Fuck this, Pylix that was wack asf lol.
 // let _inc = 4;
-
 export function getCurrentRef() {
     return useThemeStore.getState().currentRef;
 }
 
 // TODO: For debugging only, remove once done
+// NOPE: It stays, its my friend now. :)
 window.applyTheme = applyTheme;
 
 export function applyTheme(id: string | null, update: boolean) {
@@ -71,7 +70,6 @@ export function applyTheme(id: string | null, update: boolean) {
 
         // biome-ignore lint/complexity/useOptionalChain: ?. won't filter out falsys
         const base = ref?.color.reference || (manifest && manifest.main.base) || "darker";
-
         UserSettingsActionCreators.setShouldSyncAppearanceSettings(false);
         UserSettingsActionCreators.updateTheme(ref ? ref.key : base);
     }
@@ -131,7 +129,8 @@ export const useThemeStore = create(
                     }
                 };
             },
-            // We remove the partialize that sets currentRef to null
+            // FIX: Fuck this 2, Null theme boogaloo~
+            // Why partialize and set currentRef to null? :/
             // partialize: s => ({
             //     ...s,
             //     currentRef: null,
