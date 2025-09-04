@@ -1,4 +1,5 @@
 import { ScrollView, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useLayoutEffect } from "react";
 import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import { Button, IconButton, Text } from "@components/Discord";
 import AddWallpaperSheet from "./AddWallpaperSheet";
@@ -9,14 +10,14 @@ import { findAssetId } from "@api/assets";
 import ContextMenu from "@components/Discord/ContextMenu/ContextMenu";
 import { SettingsIcon } from "@metro/common/icons";
 
+
 export default function WallpaperManager() {
     const { categories, followTheme, setFollowTheme } = useWallpaperStore();
     const navigation = NavigationNative.useNavigation();
 
-    return (
-        <View style={{ flex: 1 }}>
-            {/* Top bar with Follow Theme ContextMenu */}
-            <View style={styles.topBar}>
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
                 <ContextMenu
                     items={[
                         {
@@ -27,17 +28,22 @@ export default function WallpaperManager() {
                     ]}
                 >
                     {props => (
-                        <TouchableOpacity {...props}>
+                        <TouchableOpacity {...props} style={{ backgroundColor: "transparent" }}>
                             <IconButton
-                                //text={followTheme ? "Following Theme ✅" : "Follow Theme"}
                                 onPress={() => { }}
                                 size="small"
-                                icon={<SettingsIcon />} />
+                                icon={<SettingsIcon />}
+                                style={{ backgroundColor: "transparent" }}
+                            />
                         </TouchableOpacity>
                     )}
                 </ContextMenu>
-            </View>
+            ),
+        });
+    }, [navigation, followTheme]);
 
+    return (
+        <View style={{ flex: 1 }}>
             <ScrollView style={styles.container}>
                 {categories.map(category => (
                     <View key={category.name} style={styles.categoryContainer}>
@@ -78,12 +84,8 @@ export default function WallpaperManager() {
     );
 }
 
+
 const styles = StyleSheet.create({
-    topBar: {
-        padding: 16,
-        flexDirection: "row",
-        justifyContent: "flex-end",
-    },
     container: {
         padding: 16,
     },

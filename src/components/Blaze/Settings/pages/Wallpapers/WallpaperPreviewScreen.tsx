@@ -1,17 +1,18 @@
 import { View, Image, StyleSheet, Dimensions } from "react-native";
+import { useState } from "react";
 import { Button, Slider, Text } from "@components/Discord";
 import { useWallpaperStore } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import type { Wallpaper } from "@plugins/_core/wallpapers/stores/wallpaperStore";
 import { NavigationNative } from "@metro/common/libraries";
 import { showToast } from "@api/toasts";
 import { ImageIcon, RefreshIcon, TrashIcon } from "@metro/common/icons";
+
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 interface Props { wallpaper: Wallpaper }
 
 export default function WallpaperPreviewScreen({ wallpaper }: Props) {
     const navigation = NavigationNative.useNavigation();
-
     const {
         appliedWallpaper,
         blurAmount,
@@ -26,24 +27,40 @@ export default function WallpaperPreviewScreen({ wallpaper }: Props) {
 
     const isActive = appliedWallpaper?.name === wallpaper.name;
 
+    // Convert slider value to exponential blur amount
+    const exponentialBlur = (value: number) => {
+        return Math.pow(value, 1.5); // More gentle curve than squared
+    };
+
+    // Convert blur amount back to slider value (for initial state)
+    const sliderToBlur = (blur: number) => {
+        return Math.pow(blur, 1 / 1.5);
+    };
+
+    const [sliderValue, setSliderValue] = useState(sliderToBlur(blurAmount));
+
+    // Update the actual blur amount when slider changes
+    const handleSliderChange = (value: number) => {
+        setSliderValue(value);
+        setBlurAmount(exponentialBlur(value));
+    };
+
     const handleApply = () => {
         applyWallpaper(wallpaper);
-        showToast("Wallpaper Set`");
         showToast({
             id: "wallpaper-set",
-            text: "Wallpaper set!",
-            icon: ImageIcon, // or <SomeIconComponent />
+            text: "Wallpaper Set!",
+            icon: ImageIcon,
         });
         navigation.goBack();
     };
 
     const handleClear = () => {
         clearWallpaper();
-        //showToast("Wallpaper Cleared~");
         showToast({
             id: "wallpaper-cleared",
-            text: "Wallpaper Cleared~",
-            icon: RefreshIcon, // or <SomeIconComponent />
+            text: "Wallpaper Cleared!",
+            icon: RefreshIcon,
         });
         navigation.goBack();
     };
@@ -59,10 +76,9 @@ export default function WallpaperPreviewScreen({ wallpaper }: Props) {
             deleteWallpaper(category.name, wallpaper.name);
             showToast({
                 id: "wallpaper-deleted",
-                text: "Wallpaper Deleted",
-                icon: TrashIcon, // or <SomeIconComponent />
+                text: "Wallpaper Deleted!",
+                icon: TrashIcon,
             });
-            //showToast("Wallpaper Deleted-");
             navigation.goBack();
         }
     };
@@ -86,13 +102,13 @@ export default function WallpaperPreviewScreen({ wallpaper }: Props) {
                     onValueChange={setOpacity}
                 />
 
-                <Text>Blur: {blurAmount.toFixed(0)}px</Text>
+                <Text>Blur: {blurAmount.toFixed(1)}px</Text>
                 <Slider
-                    value={blurAmount}
+                    value={sliderValue}
                     minimumValue={0}
-                    maximumValue={10}
+                    maximumValue={4} // Lower maximum due to exponential scaling
                     step={0.1}
-                    onValueChange={setBlurAmount}
+                    onValueChange={handleSliderChange}
                 />
 
                 <View style={styles.buttonsRow}>
@@ -117,7 +133,7 @@ const styles = StyleSheet.create({
     },
     controls: {
         position: "absolute",
-        bottom: 32,
+        bottom: 48,
         left: 16,
         right: 16,
         gap: 12,
